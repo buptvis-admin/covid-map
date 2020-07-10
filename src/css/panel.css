@@ -1,0 +1,349 @@
+button {
+    outline: none;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+}
+
+#track-info__box {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    /* bottom: 60px; */
+    max-height: 600px;
+    width: 220px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px 1px rgba(0,0,0, .2);
+    padding: 20px 20px 20px;
+    font-weight: 400;
+    overflow-y: scroll;
+    z-index: 1000;
+}
+
+.track-info__title, .track-info__home {
+    display: flex;
+    align-items: center;
+    margin: 0 0 10px 0;
+}
+
+.track-info__title img {
+    width: 20px;
+    height: 20px;
+}
+
+.track-info__title span {
+    font-size: 18px;
+    font-weight: 400;
+    color: #1F3051;
+}
+
+.track-info__help {
+    overflow: hidden;
+}
+
+.track-info__help p{
+    /* padding: 0 0 0 25px; */
+    font-size: 12px;
+    color: #999;
+    margin: 0;
+    /* margin: 0 0 20px 0; */
+
+}
+
+.track-info__list {
+    display: flex;
+}
+
+.track-info__home span {
+    font-size: 12px;
+    margin: 0 0 0 5px;
+    color: #3C3E41;
+}
+
+.time-line {
+    width: 33px;
+    /* flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto; */
+    display: flex;
+    justify-content: center;
+    padding: 8px 0 0;
+}
+
+.track-info__content {
+    /* flex-grow: 6;
+    flex-shrink: 6;
+    flex-basis: auto; */
+    width: 200px;
+    padding: 0 0 15px;
+}
+
+.time-line__circle {
+    position: absolute;
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-top: 2px;
+}
+
+.time-line__line {
+    display: block;
+    width: 4px;
+    opacity: 1;
+    margin:5px 0 0 0;
+    background-color: #F1F3F5;
+    /* height: 200px;   */
+}
+
+.track-date {
+    font-size: 16px;
+    color: #3C3E41;
+    margin: 5px 0; 
+    font-weight: 800;
+}
+
+.track-text {
+    font-size: 12px;
+    line-height: 24px;
+    word-wrap: break-word;
+}
+
+.text-label {
+    position: relative;
+    display:unset;
+    padding: 1px;
+    border-radius: 2px;
+    cursor: pointer;
+    -moz-user-select: none; 
+    margin-right: 1px;
+    /* 禁止选中文本 */
+    -khtml-user-select: none;
+    /* white-space: pre; */
+    pointer-events: none;
+    cursor: default;
+    /* font-weight: 800; */
+    transition-property: background-color, color;
+    transition-duration: .5s;
+    transition-timing-function: ease-in;
+    transition-delay: 0s;
+    /*transition: background-color,opacity .5s;
+    -moz-transition: background-color,opacity .5s;	/* Firefox 4 */
+    /*-webkit-transition: background-color,opacity .5s;	/* Safari 和 Chrome */
+    /*-o-transition: background-color,opacity .5s;	/* Opera */
+}
+
+/* .text-label-opacity {
+    opacity : 1;
+    transition-property: opacity;
+    transition-duration: .5s;
+    transition-timing-function: ease-in;
+    transition-delay: 0s;
+} */
+
+.span-active {
+    border: #999 solid 1px;
+}
+
+.drag-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+#select-place__btn {
+    background-image: url('../img/link.png');
+    background-size: 100%;
+    width: 25px;
+    height: 25px;
+    /* transform: rotate(-45deg); */
+    float: right;
+    margin-left: 5px;
+}
+
+#recall-merge__btn, #test__btn {
+    background-image: url('../img/back.png');
+    background-size: 100%;
+    width: 25px;
+    height: 25px;
+    float: right;
+    margin-left: 5px;
+    background-repeat: no-repeat;
+    background-position: center center;
+  
+}
+
+#modify-place__btn {
+    background-image: url('../img/edit.png');
+    background-size: 100%;
+    width: 25px;
+    height: 25px;
+    float: right;
+    margin-left: 5px;
+    background-repeat: no-repeat;
+    background-position: center center; 
+}
+
+#place-home__btn {
+    display: inline-block;
+    background-image: url('../img/place_home.png');
+    background-size: 125%;
+    width: 34px;
+    height: 34px;
+    cursor: pointer;
+    position: relative;
+    left: 0;
+    background-position: center center;
+    /* float: right; */
+}
+
+.merge-active {
+    background-color: #F9FBFF;
+    color: #8D9DB4;
+}
+
+.place-hint-start, .place-hint-end {
+    position: absolute;
+    top: -10px;
+    right: -14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: #FF7575; */
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    font-size: 12px;
+    color: #fff;
+    transform: scale(.7);
+    position: absolute;
+    font-style: normal;
+    z-index: 10;
+    font-weight: 400;
+    box-shadow: 0 0 5px 1px rgba(0,0,0,.1);
+}
+
+@keyframes myfirst
+{
+0%   {background: red; left:0px; top:0px;}
+25%  {background: yellow; left:200px; top:0px;}
+50%  {background: blue; left:200px; top:200px;}
+75%  {background: green; left:0px; top:200px;}
+100% {background: red; left:0px; top:0px;}
+}
+
+@-moz-keyframes myfirst /* Firefox */
+{
+0%   {background: red; left:0px; top:0px;}
+25%  {background: yellow; left:200px; top:0px;}
+50%  {background: blue; left:200px; top:200px;}
+75%  {background: green; left:0px; top:200px;}
+100% {background: red; left:0px; top:0px;}
+}
+
+@-webkit-keyframes myfirst /* Safari 和 Chrome */
+{
+0%   {background: red; left:0px; top:0px;}
+25%  {background: yellow; left:200px; top:0px;}
+50%  {background: blue; left:200px; top:200px;}
+75%  {background: green; left:0px; top:200px;}
+100% {background: red; left:0px; top:0px;}
+}
+
+@-o-keyframes myfirst /* Opera */
+{
+0%   {background: red; left:0px; top:0px;}
+25%  {background: yellow; left:200px; top:0px;}
+50%  {background: blue; left:200px; top:200px;}
+75%  {background: green; left:0px; top:200px;}
+100% {background: red; left:0px; top:0px;}
+}
+
+.cube {
+    animation-name: myfirst;
+    animation-duration: 5s;
+    animation-timing-function: linear;
+    animation-delay: 2s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-play-state: running;
+    /* Firefox: */
+    -moz-animation-name: myfirst;
+    -moz-animation-duration: 5s;
+    -moz-animation-timing-function: linear;
+    -moz-animation-delay: 2s;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-direction: alternate;
+    -moz-animation-play-state: running;
+    /* Safari 和 Chrome: */
+    -webkit-animation-name: myfirst;
+    -webkit-animation-duration: 5s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-delay: 2s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-direction: alternate;
+    -webkit-animation-play-state: running;
+    /* Opera: */
+    -o-animation-name: myfirst;
+    -o-animation-duration: 5s;
+    -o-animation-timing-function: linear;
+    -o-animation-delay: 2s;
+    -o-animation-iteration-count: infinite;
+    -o-animation-direction: alternate;
+    -o-animation-play-state: running;
+    }
+
+    .trans-btn {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        height: 20px;
+        box-shadow: 0 0 5px 1px rgba(0,0,0,.1);
+        border-radius: 50%;
+        z-index: 10000;
+        opacity: 0;
+        transition-property: opacity;
+        transition-duration: .2s;
+        transition-timing-function: ease-in;
+        transition-delay: 0s;
+        cursor: pointer;
+    }
+
+    .place-btn {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 35px;
+        height: 35px;
+        /* box-shadow: 0 0 5px 1px rgba(0,0,0,.1); */
+        border-radius: 50%;
+        z-index: 999;
+        opacity: 0;
+        transition-property: opacity;
+        transition-duration: .2s;
+        transition-timing-function: ease-in;
+        transition-delay: 0s;
+        cursor: pointer;
+    }
+
+    /* #modi-input {
+        width: auto;
+    } */
+    /* .trans-btn-animate {
+    
+        /* animation-play-state: running; */
+    /* } */ 
+
+    #update-hint {
+        font-size: 12px;
+        font-style: normal;
+        margin-left: 10px;
+        opacity: 0;
+        transition-property: opacity;
+        transition-duration: .2s;
+        transition-timing-function: ease-in;
+        transition-delay: 0s;
+    }
