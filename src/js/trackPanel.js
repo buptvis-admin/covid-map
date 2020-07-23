@@ -9,13 +9,13 @@ trackInfoBox.appendChild(trackInfoListBox)
 var trans_bus_and_sub = '公交车|地铁|大巴|旅游车|通勤车|客车'
 trans_bus_and_sub = trans_bus_and_sub.split('|')
 
-var trans_walk = '步行|骑车'
+var trans_walk = '步行|骑车|摩托车'
 trans_walk = trans_walk.split('|')
 
 var trans_train_and_plane = '火车|国航|航班'
 trans_train_and_plane = trans_train_and_plane.split('|')
 
-var trans_selfcar = '私家车|驾车'  // 定义使用择一匹配符号的文本模式字符串
+var trans_selfcar = '私家车|驾车|自驾车'  // 定义使用择一匹配符号的文本模式字符串
 trans_selfcar = trans_selfcar.split('|')
 
 var trans_taxi = '出租车|拼车|打车|网约车|乘车'
@@ -100,6 +100,10 @@ function createPanel() {
         .attr('id', 'place-home__btn')
         // .on('click', selectPlace)
 
+    document.getElementById('user-info-date').innerHTML = currentCase['release_date'].split(' ')[0]
+    document.getElementById('user-info-content').innerHTML =  currentCase['patient_information'][0]['name']  
+    + currentCase['patient_information'][0]['gender'] + ' '
+    + currentCase['patient_information'][0]['age'] + '<br>' 
      // 添加 居住地
 
      if (document.getElementById('home-place__info') !== null) {

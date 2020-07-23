@@ -82,15 +82,19 @@ crossorigin=""></script>
     <div id="user-list__content"></div>
 </div>
 <div id="track-info__box">
+    <i id="update-hint">地图更新!</i>
     <div class="track-info__help">
-        <div class="track-info__title">
-            <!-- <img src="./src/img/info@2x.png">&nbsp; -->
-            <span >轨迹编辑</span><i id="update-hint">地图更新!</i>
+        <div id="user-title-box">
+            <div class="track-info__title">
+                <!-- <img src="./src/img/info@2x.png">&nbsp; -->
+                <span id="user-info-date">轨迹编辑</span>
+            </div>
+            <p id="user-info-content">
+                <!-- 点击选择文本标签，多选合并标签。
+                拖动标签至地图可以修改轨迹，
+                帮助我们生成更精确的轨迹。 -->
+            </p>
         </div>
-        <p>点击选择文本标签，多选合并标签。
-            拖动标签至地图可以修改轨迹，
-            帮助我们生成更精确的轨迹。
-        </p>
 
         <button id="recall-merge__btn" onclick="backToMerge(currentCase._id)"></button>
         <button id="select-place__btn" onclick="selectPlaceState()"></button>

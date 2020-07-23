@@ -33,9 +33,26 @@ button {
 }
 
 .track-info__title span {
+    font-size: 14px;
+    font-weight: 400;
+    color: #1F3051;
+}
+
+#user-info-content {
     font-size: 18px;
     font-weight: 400;
     color: #1F3051;
+    font-style: italic;
+}
+
+#user-info-date {
+    font-style: italic;
+}
+
+#user-title-box {
+    border-left: solid 5px #1F3051;
+    margin-left: 13px;
+    padding-left: 12px;
 }
 
 .track-info__help {
@@ -346,4 +363,6 @@ button {
         transition-duration: .2s;
         transition-timing-function: ease-in;
         transition-delay: 0s;
+        position: absolute;
+        top: -20px
     }
