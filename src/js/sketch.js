@@ -340,7 +340,7 @@ function drawPath(daily, datePoint, parentIndex, shape) {
                             midPoint.x = d3.event.x;
                             midPoint.y = d3.event.y;
                             points = [d[0], midPoint, d[1]];
-                            //console.log("text", points);
+                            //console.log("trans", points);
 
                             curve.attr("d", lineFunction(points));
                             addArrow(arrow1, curve, 0.25);
@@ -362,7 +362,8 @@ function drawPath(daily, datePoint, parentIndex, shape) {
                 
 
                 // 终点icon
-                let end_wrapper = text_svg.append("g").attr('class', 'place-icon')
+                let end_wrapper = text_svg.append("g").attr('class', 'place-icon');
+                let end_tag = end_wrapper.append("g").attr('class', 'end_tag');
                 let end_circle = end_wrapper.datum(place)
                     .append("image")
                     .attr('class', 'site')
@@ -448,7 +449,7 @@ function drawPath(daily, datePoint, parentIndex, shape) {
 
                 // 地点标签
                 var textBox;
-                var test =  end_wrapper.append("text")
+                var test = end_tag.append("text")
                     .attr("x", endPoint.x)
                     .attr("y", endPoint.y + 32)
                     .attr("class", "text_tag")
@@ -458,7 +459,7 @@ function drawPath(daily, datePoint, parentIndex, shape) {
                     });
                 test.remove();
 
-                end_wrapper.append("rect")
+                end_tag.append("rect")
                     .attr("width", textBox.width + 12)
                     .attr("height", textBox.height + 2)
                     .attr("x", textBox.x - 6)
@@ -472,9 +473,9 @@ function drawPath(daily, datePoint, parentIndex, shape) {
                             return 'none'
                             // (homePoint.x + 15) + offset - center_offset;
                         } else return 'block'
-                    })
+                    });
 
-                end_wrapper.append("text")
+                end_tag.append("text")
                     .attr("x", endPoint.x)
                     .attr("y", endPoint.y + 32)
                     .attr("class", "text_tag")
@@ -484,37 +485,34 @@ function drawPath(daily, datePoint, parentIndex, shape) {
                             return 'none'
                             // (homePoint.x + 15) + offset - center_offset;
                         } else return 'block'
+                    });
+
+                // 拖动地点图标
+                end_circle.call(d3.drag()
+                    .on("drag", function(d) {
+                        d3.select(this).attr("x", d3.event.x - bigWidth/2).attr("y", d3.event.y - bigWidth/2);
+
+                        endPoint.x = d3.event.x;
+                        endPoint.y = d3.event.y;
+                        points = [points[0], midPoint, endPoint];
+                        // console.log("icon", points);
+
+                        curve.attr("d", lineFunction(points));
+                        addArrow(arrow1, curve, 0.25);
+                        addArrow(arrow2, curve, 0.75);
                     })
-                end_wrapper.call(
-                    d3.drag()
-                        // .subject(function(d) {
-                        //     return { x: d3.select(this).attr("cx"), y: d3.select(this).attr("cy") };
-                        // })
-                        .on("drag", function(d) {
-                            // console.log(d, 'd')
-                            d3.select(this).select('image').attr("x", d3.event.x-20).attr("y", d3.event.y-20);
-                            d3.select(this).select('rect').attr("x", d3.event.x - textBox.width/2-6).attr("y", d3.event.y + textBox.height/2+15);
-                            d3.select(this).select('text').attr("x", d3.event.x).attr("y", d3.event.y + textBox.height/2+27);
-                            // midPoint.x = d3.event.x;
-                            // midPoint.y = d3.event.y;
-                            endPoint.x = d3.event.x;
-                            endPoint.y = d3.event.y;
-                            points = [points[0], midPoint, endPoint];
-                            // //console.log("text", points);
+                );
 
-                            curve.attr("d", lineFunction(points));
-                            addArrow(arrow1, curve, 0.25);
-                            addArrow(arrow2, curve, 0.75);
-
-                            // place.midPOI = map.layerPointToLatLng(midPoint);
-                })
-            );
-
-            
+                // 拖动地点标签
+                end_tag.call(d3.drag()
+                    .on("drag", function(d) {
+                        d3.select(this).select('rect').attr("x", d3.event.x - (textBox.width+12)/2).attr("y", d3.event.y - (textBox.height+2)/2);
+                        d3.select(this).select('text').attr("x", d3.event.x).attr("y", d3.event.y+4);
+                    })
+                )
             }           
         });
     }
-
 
     d3.selectAll('.site')
         .on("click", function(data, index) {
@@ -554,8 +552,6 @@ function drawPath(daily, datePoint, parentIndex, shape) {
             }
             // console.log(place, 'sss')
         })
-
-    canBeClicked = true;
 }
 
 function selectPlaceType(e) {
