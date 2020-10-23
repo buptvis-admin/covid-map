@@ -1382,7 +1382,7 @@
                         "vehicle": "taxi"
                     }
                 ],
-                "word_segmentation": "8/m 时/qt 49/m 分/qt ，/w 打车/v 到/v 市红十字中心医院发热门诊/place/1 就诊/vi ，/w 10/m 时/qt 30/m 分/qt 许/v 打车/v 回家/place/2",
+                "word_segmentation": "8/m 时/qt 49/m 分/qt ，/w 打车/v 到/v 市红十字中心医院发热门诊/place/1 就诊/vi ，/w 10/m 时/qt 30/m 分/qt 许/v 打车/v 回/v 家/place/2",
                 "sentence": "8时49分，打车到市红十字中心医院发热门诊就诊，10时30分许打车回家"
             },
             {

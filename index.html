@@ -198,14 +198,15 @@ const p1 = (palce1) =>
             }
         }
         if (!hasNearWord) {
-            palce1 = currentCase.province + currentCase.city + palce1
+            palce1 = currentCase.province + palce1 // Angeli 2020.10.23 currentCase.province + currentCase.city + currentCase['District / County'] + palce1
+            // console.log(palce1, 'palce1p111')
                 myGeo.getPoint(palce1, function (point) {
                     if (point) {
                         resolve(point)
                     } else {
                         //resolve('')
                     }
-                }, data[index].province)
+                }, data[index].city) // Angeli 2020.10.23
         }
         //else console.log("wakaka")
 
@@ -213,11 +214,12 @@ const p1 = (palce1) =>
 
 const p3 = (palce1) =>
     new Promise((resolve, reject) => {
+        // console.log(palce1, 'palce1,p333')
         myGeo.getPoint(palce1, function (point) {
             if (point) {
                 resolve(point)
             }
-        }, data[index].province)
+        }, data[index].city) // Angeli 2020.10.23
     })
 
 const p2 = (palce2) =>
@@ -228,9 +230,9 @@ const p2 = (palce2) =>
                 resolve(point)
             }
         
-        }, data[index].province)
+        }, data[index].city) // Angeli 2020.10.23
     })
-    console.log('???')
+    // console.log('???')
 
 function uuid() {
     var s = [];
@@ -250,7 +252,7 @@ function uuid() {
 const func = async () => {
     // console.log(currentCase._id, 'currentCase')
     // 获取居住地经纬度
-    var address_str = currentCase.province + currentCase.city + currentCase.patient_information[0].current_address;
+    var address_str = currentCase.province + currentCase.patient_information[0].current_address; //  currentCase.province + currentCase.city + currentCase.patient_information[0].current_address; // Angeli 2020.10.23
     var address_POI;
     await p3(address_str)
         .then(res => {
@@ -343,6 +345,7 @@ function changeProvince() {
                 reorder(this, data);
             }
             currentCase = data[0];
+            // console.log(data[index].city, 'data[index].city')
             func();
             wordSegmentation();
             createPanel();
