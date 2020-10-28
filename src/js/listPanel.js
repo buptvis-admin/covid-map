@@ -1,5 +1,5 @@
 // 生成病例列表
-function createUserList(data) {
+function createUserList(data, cityData) {
     var list_wrapper = document.getElementById('user-list__content');
     list_wrapper.innerHTML = '';
     data.forEach((d,i) => {
@@ -67,7 +67,9 @@ function createUserList(data) {
 
                 index = i;
                 currentCase = data[i];
-                func();
+                
+                func(cityData);
+                
                 wordSegmentation()
                 createPanel()
                 isSelectPlace = false
@@ -94,5 +96,5 @@ function reorder(element,data) {
     //console.log("reorder", data)
     currentCase = data[0];
     createUserList(data);
-    func();
+    func(cityData);
 }

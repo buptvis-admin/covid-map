@@ -120,7 +120,7 @@ function modifyPlace(data, index) {
                 
 
                 createPanel()
-                func()
+                func(cityData)
                 currentCase.track.forEach((item, index) => {
                     d3.selectAll('.track-text__label-' + index )
                     .call(
@@ -143,7 +143,7 @@ function modifyPlace(data, index) {
                     currentCase['track'][ parentIndex ]['place'][data.placeIndex].name = document.getElementById('modi-input').value
                 } 
                 createPanel()
-                func()
+                func(cityData)
                 currentCase.track.forEach((item, index) => {
                     d3.selectAll('.track-text__label-' + index )
                     .call(

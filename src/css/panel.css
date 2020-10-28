@@ -38,6 +38,19 @@ button {
     color: #1F3051;
 }
 
+.track-info__city-or-province {
+    font-size: 12px;
+    display: flex;
+}
+
+.title_city-or-province {
+    margin: 0 10px 0 5px;
+}
+
+#input_city-or-province {
+    width: 80px;
+}
+
 #user-info-content {
     font-size: 18px;
     font-weight: 400;

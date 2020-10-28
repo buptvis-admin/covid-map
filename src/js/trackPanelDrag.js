@@ -88,7 +88,7 @@ function dragEnd(data, index) {
                         currentCase['track'][ parentIndex ]['place'][ placeIndex ].name = newLabelText
                         currentCase['track'][ parentIndex ]['word_segmentation'].splice(thisIndex, 1)
                         
-                        func();
+                        func(cityData);
                         showHint('合并成功！地图更新', true)
        
                         // _eachThis.node().style.opacity = 0.5
@@ -102,7 +102,8 @@ function dragEnd(data, index) {
                         currentCase['track'][ parentIndex ]['word_segmentation'].splice(nextIndex, 1) // 删除
    
                     
-                        func();
+                        func(cityData);
+                        
                         showHint('合并成功!地图更新', true)
                      
                         // _eachThis.node().style.opacity = 0.5
