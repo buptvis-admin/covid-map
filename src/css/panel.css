@@ -142,7 +142,7 @@ button {
 
 .text-label {
     position: relative;
-    display:unset;
+    display:inline;
     padding: 1px;
     border-radius: 2px;
     cursor: pointer;
@@ -150,7 +150,7 @@ button {
     margin-right: 1px;
     /* 禁止选中文本 */
     -khtml-user-select: none;
-    /* white-space: pre; */
+    white-space: pre;
     pointer-events: none;
     cursor: default;
     /* font-weight: 800; */

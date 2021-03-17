@@ -555,10 +555,7 @@ function drawPath(daily, datePoint, parentIndex, shape) {
 }
 
 function selectPlaceType(e) {
-    // console.log(thisPlaceType, '?????')
-    // console.log(e.target.id, '?????')
     currentCase['track'][thisPlaceType.parentIndex]['place'][thisPlaceType.index].tag = e.target.id
-    // console.log(currentCase['track'], 'place')
     // 关闭trans弹框
     let placeIcon = document.getElementsByClassName('place-btn')
     for(let i = 0; i < placeIcon.length; i++) {

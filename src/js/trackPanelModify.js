@@ -1,65 +1,3 @@
-// var isModifyPlace = false
-// function modifyPlaceState() {
-//     if(!isModifyPlace) {
-//         document.getElementById('modify-place__btn').style.opacity = .3
-//         document.getElementById('select-place__btn').style.opacity = 1
-
-//         // 清空所有选择
-//         createPanel()
-
-//         currentCase.track.forEach((item, index) => {
-//             d3.selectAll('.track-text__label-' + index )
-//             .call(
-//                 d3.drag()
-//                 // .clickDistance(400)
-//                 .on("start", null)
-//                 .on("drag", null)
-//                 .on("end", null)
-//             )
-//             .on('dblclick', modifyPlace)
-//             .on('click', null)
-//         })
-
-//         isModifyPlace = true
-//         isSelectPlace = false
-
-//         d3.select('#place-home__btn')
-//         .on('click', null)
-
-//         // 清空所有选择
-//         let transIcon = document.getElementsByClassName('trans-btn')
-//         for(let i = 0; i < transIcon.length; i++) {
-//             transIcon[i].style.opacity = 0
-//             transIcon[i].style.display = 'none'
-//         }
-//     } else {
-//         document.getElementById('modify-place__btn').style.opacity = 1
-//         currentCase.track.forEach((item, index) => {
-//             d3.selectAll('.track-text__label-' + index )
-//             .call(
-//                 d3.drag()
-//                 // .clickDistance(400)
-//                 .on("start", dragStart)
-//                 .on("drag", draged)
-//                 .on("end", dragEnd)
-//             )
-//             .on('dblclick', null)
-//             // .on('dblclick', null)
-//             .on('click', null)
-//         })
-
-//         d3.select('#place-home__btn')
-//         .on('click', null)
-
-//         if (document.getElementById('modi-input')) {
-//             document.getElementById('modi-input').parentNode.innerHTML = document.getElementById('modi-input').value
-//         }
-
-//         isModifyPlace = false   
-//         isSelectPlace = true  
-//     }
-// }
-
 
 function modifyPlace(data, index) {
     d3.event.stopPropagation(); // 没用！！！?
@@ -157,22 +95,8 @@ function modifyPlace(data, index) {
                     .on('click', null)
                 })
 
-                // document.getElementById('modi-input').parentNode.innerHTML = document.getElementById('modi-input').value
-
-                // console.log(currentCase['track'][ parentIndex ]['word_segmentation'],  '@@@@')
-                // console.log(currentCase['track'][ parentIndex ]['place'][data.placeIndex], '###')
-                // document.getElementById('modi-input').parentNode.removeChild(document.getElementById('modi-input'))
             }
-            // alert("修改成功")
 
         }
     }
 }
-
-// createPanel()
-// d3.select('#track-info__box').on('click', function() {
-
-//     if (document.getElementById('modi-input')) {
-//         document.getElementById('modi-input').parentNode.innerHTML = document.getElementById('modi-input').value
-//     }
-// })

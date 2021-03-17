@@ -78,8 +78,6 @@ function wordSegmentation() {
   
 }
 // wordSegmentation()
-
-
 function createPanel() {
 
     let homeNodes = document.getElementById('track-info__home').childNodes 
@@ -265,9 +263,6 @@ function createPanel() {
     // .on('click', modifyPlace)
     // console.log(currentCase['track'][ 0 ]['word_segmentation'], 'word_segmentation')
 }
-
-
-
 
 // // 好像没什么用
 // function selectTrackLabel(e) {
