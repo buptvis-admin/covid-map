@@ -45,6 +45,13 @@ function createUserList(data, cityData) {
         address_wrapper.innerHTML = address;
         case_wrapper.appendChild(address_wrapper);
 
+        // 默认第一个病例卡片展开
+        if (i == 0) {
+            case_wrapper.style.height = "42px";
+            block_span.style.opacity = 0;
+            address_wrapper.style.opacity = 1;
+        }
+
         case_wrapper.onclick = function() {
             // console.log(canBeClicked);
             //if (canBeClicked == true) {

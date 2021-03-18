@@ -441,7 +441,9 @@ function drawPath(daily, datePoint, parentIndex, shape) {
                 end_circle
                     .call(d3.drag()
                     .on("start", function() {
-                        nextPath = curve.node().parentNode.nextSibling.firstChild;
+                        if (j <= daily.place.length-2) {
+                            nextPath = curve.node().parentNode.nextSibling.firstChild;
+                        }
                     })
                     .on("drag", function(d) {
                         d3.select(this).attr("x", d3.event.x - bigWidth/2).attr("y", d3.event.y - bigWidth/2);
@@ -455,16 +457,17 @@ function drawPath(daily, datePoint, parentIndex, shape) {
                         addArrow(arrow1, curve, 0.25);
                         addArrow(arrow2, curve, 0.75);
 
-                        let nextPathPoints = d3.select(nextPath).datum();
-                        nextPathPoints[0] = {
-                            x: d3.event.x,
-                            y: d3.event.y
-                        };
+                        if (nextPath) {
+                             let nextPathPoints = d3.select(nextPath).datum();
+                            nextPathPoints[0] = {
+                                x: d3.event.x,
+                                y: d3.event.y
+                            };
 
-                        d3.select(nextPath)
-                        .datum(nextPathPoints)
-                        .attr("d", lineFunction(nextPathPoints));
-
+                            d3.select(nextPath)
+                            .datum(nextPathPoints)
+                            .attr("d", lineFunction(nextPathPoints));
+                        }
                     })
                 );
                 
