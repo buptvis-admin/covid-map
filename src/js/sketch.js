@@ -232,6 +232,7 @@ function drawPath(daily, datePoint, parentIndex, shape) {
                 startPoint = endPoint;
 
                 // 添加路径
+                //console.log("place", place)
                 var path_wrapper = track_svg.datum(place)
                     .append("g")
                     .style("visibility", (d) => {
@@ -281,6 +282,7 @@ function drawPath(daily, datePoint, parentIndex, shape) {
 
                 var curve = path_wrapper
                     .append("path")
+                    .datum(points)
                     .attr("d", lineFunction(points))
                     .attr("stroke", () => {
                         switch (place.vehicle) {
@@ -307,6 +309,7 @@ function drawPath(daily, datePoint, parentIndex, shape) {
                     .attr("class", "curve")
                     //.attr("marker-mid","url(#arrow)")
                     .style("pointer-events", "visiblePainted");
+                //console.log("why", curve.datum())
 
                 // 箭头
                 var arrow1 = path_wrapper.append("use").attr("xlink:href", "#arrow");
@@ -432,7 +435,38 @@ function drawPath(daily, datePoint, parentIndex, shape) {
                             drawTrack(currentCase);
                         }
                     })
-        
+
+                // 拖动地点图标
+                let nextPath;
+                end_circle
+                    .call(d3.drag()
+                    .on("start", function() {
+                        nextPath = curve.node().parentNode.nextSibling.firstChild;
+                    })
+                    .on("drag", function(d) {
+                        d3.select(this).attr("x", d3.event.x - bigWidth/2).attr("y", d3.event.y - bigWidth/2);
+
+                        endPoint.x = d3.event.x;
+                        endPoint.y = d3.event.y;
+                        points = [points[0], midPoint, endPoint];
+                        // console.log("icon", points);
+
+                        curve.attr("d", lineFunction(points));
+                        addArrow(arrow1, curve, 0.25);
+                        addArrow(arrow2, curve, 0.75);
+
+                        let nextPathPoints = d3.select(nextPath).datum();
+                        nextPathPoints[0] = {
+                            x: d3.event.x,
+                            y: d3.event.y
+                        };
+
+                        d3.select(nextPath)
+                        .datum(nextPathPoints)
+                        .attr("d", lineFunction(nextPathPoints));
+
+                    })
+                );
                 
                 // 未知地点标签
                 if (genericTerm.indexOf(place.name) !== -1 || 
@@ -487,21 +521,7 @@ function drawPath(daily, datePoint, parentIndex, shape) {
                         } else return 'block'
                     });
 
-                // 拖动地点图标
-                end_circle.call(d3.drag()
-                    .on("drag", function(d) {
-                        d3.select(this).attr("x", d3.event.x - bigWidth/2).attr("y", d3.event.y - bigWidth/2);
-
-                        endPoint.x = d3.event.x;
-                        endPoint.y = d3.event.y;
-                        points = [points[0], midPoint, endPoint];
-                        // console.log("icon", points);
-
-                        curve.attr("d", lineFunction(points));
-                        addArrow(arrow1, curve, 0.25);
-                        addArrow(arrow2, curve, 0.75);
-                    })
-                );
+                
 
                 // 拖动地点标签
                 end_tag.call(d3.drag()
