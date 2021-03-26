@@ -2,7 +2,6 @@
 var targetPlaceText = '';
 var dragDiv = document.createElement('div')
 dragDiv.classList.add('drag-box')
-
 var body = document.getElementsByTagName('body')[0]
 body.appendChild(dragDiv)
 // document.onselectstart = () => false;
@@ -13,6 +12,7 @@ var cloneNodeForDrag = null;
 var highlightBgColor = '#455b7c' //'#6FAAFF'
 
 function dragEnd(data, index) {
+// console.log('end222222')
 // if(wasMoved) {
     // 删除浮动标签
     let hoverLabel = document.getElementById('hover-label')
@@ -22,6 +22,8 @@ function dragEnd(data, index) {
     _this.node().style.backgroundColor = themeBgColor
     _this.node().style.color = themeFontColor
     let thisIndex = index
+
+    // console.log(thisIndex, 'thisIndex')
 
     mouseOffsetX =  d3.event.sourceEvent.clientX - mouseStartX
     mouseOffsetY =  d3.event.sourceEvent.clientY - mouseStartY
@@ -99,6 +101,7 @@ function dragEnd(data, index) {
                         currentCase['track'][ parentIndex ]['place'][ placeIndex ].name = newLabelText // 替换
                         currentCase['track'][ parentIndex ]['word_segmentation'].splice(nextIndex, 1) // 删除
    
+                    
                         func(cityData);
                         
                         showHint('合并成功!地图更新', true)
@@ -111,6 +114,9 @@ function dragEnd(data, index) {
                         currentCase['track'][ parentIndex ]['word_segmentation'][nextIndex].new = true
                         currentCase['track'][ parentIndex ]['word_segmentation'].splice(thisIndex, 1)
                     }
+
+                    // console.log(backToMergeList, 'backToMergeList')
+                    // console.log(currentCase['track'][ parentIndex ]['word_segmentation'], 'word_segmentation')
 
                     createPanel() // 重绘所有dom
 
@@ -138,6 +144,7 @@ function dragEnd(data, index) {
         })
     // }
     // wasMoved = false;
+    dataUpdate = true;
 }
 
 function draged(data,index) {
@@ -176,6 +183,8 @@ function draged(data,index) {
         let spanLabelsOffsetRight = spanLabelsOffsetLeft + _eachThis.node().offsetWidth
         let spanLabelsOffsetBottom = spanLabelsOffsetTop + _eachThis.node().offsetHeight
 
+        //console.log(spanLabelsOffsetLeft, spanLabelsOffsetTop, spanLabelsOffsetRight, spanLabelsOffsetBottom)
+
         // let nextIndex = j
         let noIndex = index !== j // 不包括自己碰撞
         let draggable = _eachThis.node().getAttribute('draggable') // 只能和draggable的碰撞
@@ -200,9 +209,11 @@ function draged(data,index) {
        
    })
 //    wasMoved = true
+
 }
 
 function dragStart(d) {
+    // console.log('dragStart000')
     // d3.event.sourceEvent.stopPropagation();
     mouseStartX = d3.event.sourceEvent.clientX // 获取相对于body的坐标
     mouseStartY = d3.event.sourceEvent.clientY
@@ -232,6 +243,7 @@ function backToMerge(currentCaseId) {
                     currentCase['track'][ nowParentIndex ]['place'] = backToMergeList[ i ].placeList
                     backToMergeList.splice(i, 1)
 
+                    // console.log(backToMergeList, 'pop()成功！！！')
                     createPanel();  // 重绘所有dom
                     drawTrack(currentCase);
                     break;
@@ -240,6 +252,7 @@ function backToMerge(currentCaseId) {
        }
 
    }
+    // console.log(backToMergeList, 'backToMergeList')
 }
 
 function pushBackList(parentIndex) {

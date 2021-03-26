@@ -340,5 +340,6 @@ function selectTrans(e) {
         transIcon[i].style.display = 'none'
         transIcon[i].removeEventListener("click", selectTrans)
     }
+    dataUpdate = true;
 }
 

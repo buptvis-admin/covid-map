@@ -37,6 +37,83 @@ function healthStateColorFunc(hs) {
     }
 }
 
+//文案编辑
+function editWords(){
+    // document.getElementById("word-others").style.display = "none";
+    // document.getElementById("track-info__home").style.display = "none";
+    // document.getElementById("track-info-content__box").style.display = "none";
+
+    document.getElementById("user-list__content").style.display = "none";
+    document.getElementById("data_description").style.display = "none";
+    document.getElementById("word-write").style.display = "block";
+
+    document.getElementById("order_select").style.color =  "#AFB8C5";
+    document.getElementById("order_select").style.fontWeight = "500";
+
+    document.getElementById("order_input").style.color =  "#567ABF";
+    document.getElementById("order_input").style.fontWeight = "600";
+
+    document.getElementById("hover_bar").style.left = "120px";
+
+
+}
+
+function backToOriginal(){
+    // document.getElementById("word-others").style.display = "block";
+    //
+    // document.getElementById("track-info__home").style.display = "block";
+    // document.getElementById("track-info-content__box").style.display = "block";
+    document.getElementById("user-list__content").style.display = "block";
+    document.getElementById("data_description").style.display = "block";
+    document.getElementById("word-write").style.display = "none";
+
+    document.getElementById("order_select").style.color =  "#567ABF";
+    document.getElementById("order_select").style.fontWeight = "600";
+
+    document.getElementById("order_input").style.color =  "#AFB8C5";
+    document.getElementById("order_input").style.fontWeight = "500";
+
+    document.getElementById("hover_bar").style.left = "30px";
+
+}
+
+//数据传输
+function getTrack(){
+    let write_message = {};
+    write_message["province"]=document.getElementById("write-province").value;
+    write_message["city"]=document.getElementById("write-area").value;
+    write_message["place"]=document.getElementById("write-place").value;
+    write_message["pub_time"]=document.getElementById("public-time").value;
+    write_message["user_name"]=document.getElementById("patient-message").value;
+    write_message["track"]=document.getElementById("track").value;
+
+
+    $.ajax({
+        type: 'POST',
+        url: "/test",
+        data:JSON.stringify(write_message),
+        contentType: 'application/json; charset=UTF-8',
+        success:function(data_1){ //成功的话，得到消息
+            //alert(data);
+            console.log(data_1);
+            data = data_1;
+            currentCase = data_1;
+            console.log(cityData)
+            // var fullName = pinyin.getFullChars(currentCase.province);
+            // console.log(fullName)
+            func(cityData);
+            wordSegmentation();
+            createPanel();
+            document.getElementById("update-hint").style.opacity = 1;
+            // document.getElementById("word-write").style.display = "none";
+            // document.getElementById("word-others").style.display = "block";
+            // document.getElementById("track-info__home").style.display = "block";
+            // document.getElementById("track-info-content__box").style.display = "block";
+
+        }
+    })
+}
+
 // 预处理分词结构
 function wordSegmentation() {
     currentCase.track.forEach((item, index) => {
@@ -78,7 +155,10 @@ function wordSegmentation() {
   
 }
 // wordSegmentation()
+
+
 function createPanel() {
+    // console.log(cityData,currentCase)
 
     let homeNodes = document.getElementById('track-info__home').childNodes 
     for (let i = homeNodes.length-1;i >=0;i--) {
@@ -263,6 +343,9 @@ function createPanel() {
     // .on('click', modifyPlace)
     // console.log(currentCase['track'][ 0 ]['word_segmentation'], 'word_segmentation')
 }
+
+
+
 
 // // 好像没什么用
 // function selectTrackLabel(e) {

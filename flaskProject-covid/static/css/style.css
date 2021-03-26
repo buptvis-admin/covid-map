@@ -59,8 +59,8 @@ option{
     left: 0;
     right: 0;
     bottom: 0;
-    height: 100px;
-    background-image: url(../img/background.png);
+    height: 65px;
+    background-image: url(../img/backgroun.png);
     background-position: center;
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -79,13 +79,27 @@ option{
     letter-spacing: 1px;
 }
 #order_wrapper {
-    margin-top: 20px;
+    top: 60px;
+    height: 26px;
+    margin: 20px 50px;
     font-size: 10px;
     /*font-family: pingfang SC;*/
     color: #EFF7FE;
     position: relative;
-    padding: 0 0 0 15px;
+    padding: 0;
 }
+
+#hover_bar{
+    width: 30px;
+    height: 3px;
+    background-color: #567ABF;
+    position: absolute;
+    left: 30px;
+    bottom: 0;
+    transition: all .2s cubic-bezier(0.215, 0.610, 0.355, 1) 0s;
+    border-radius: 2px;
+}
+
 #img_order {
     width: 10px;
     height: 10px;
@@ -97,16 +111,25 @@ option{
     top: 2px;
     left: 0;
 }
-.order {
-    color: rgb(239,247,254, 1);
+#order_select {
+    color: #567ABF;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 15px;
     cursor: pointer;
 }
-.order_active {
-    color: rgb(239,247,254, 1);
+
+#order_input {
+    color: #AFB8C5;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 15px;
     cursor: pointer;
 }
 #data_description {
     position: absolute;
+    height: 20px;
+    margin-top: 15px;
     top: 127px;
     font-size: 7px;
     text-align: center;
@@ -117,7 +140,7 @@ option{
 }    
 #user-list__content {
     position: absolute;
-    top: 147px;
+    top: 170px;
     right: 0;
     bottom: 0;
     left: 20px;

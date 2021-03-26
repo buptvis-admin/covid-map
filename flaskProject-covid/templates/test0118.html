@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文案</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+<!--     具体做法是：首先将input标签用一个div标签包裹，并设置div的属性为：style='display:inline'，同时也设置input的属性为：style='display:inline'，input前后都可加汉字，实例如下：-->
+<div style="display:inline;margin-left: 100px">
+     省份：
+<!--         &nbsp;&nbsp;-->
+     <input type="text" id="province"  maxlength="10"
+            style="width:113px;margin-bottom:2px;display:inline"/>
+</div>
+
+<div style="margin-left: 100px">
+    <p>轨迹文案:</p>
+    <textarea id="track" rows="10" cols="25"></textarea>
+</div>
+<br/>
+<div style="margin-left: 220px">
+    <button id="contact" onclick="getTrack();">生成轨迹</button>
+</div>
+
+<script>
+function getTrack(){
+    var province_input = document.getElementById("province").value;
+    var track_input = document.getElementById("track").value;
+    var patient_messege ={
+            "province":province_input,
+            "track":track_input
+    }
+    console.log(patient_messege);
+    $.ajax({
+        type: 'POST',
+        url: "/test0118",
+        data:JSON.stringify(patient_messege),
+        contentType: 'application/json; charset=UTF-8',
+        success:function(data){ //成功的话，得到消息
+            //alert(data);
+            console.log(data);
+            currentCase = data[i];
+
+            func(cityData);
+
+            wordSegmentation()
+            createPanel()
+        }
+    })
+
+
+}
+</script>
+</body>
+</html>
