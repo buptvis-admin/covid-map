@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin="" />
+
+    <link rel="stylesheet" type="text/css" href="./src/css/panel.css">
+    <link rel="stylesheet" href="src/css/style.css">
+
+    <script type="text/javascript"
+        src="http://api.map.baidu.com/api?v=3.0&ak=vrdkaDGnbGWW2Aq4UFlOOjfUe76x3G9T"></script>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+        integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+        crossorigin=""></script>
+
+    <script src="https://cdn.bootcss.com/proj4js/2.4.3/proj4.js"></script>
+    <script src="https://cdn.bootcss.com/proj4leaflet/1.0.1/proj4leaflet.min.js"></script>
+
+    <script src="./src/js/tileLayer.baidu.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@5.15.0/dist/d3.min.js"></script>
+    <script>
+        var cityData, countryData;
+        d3.csv("BaiduMap_cityCode_1102-1.csv").then(function (cityData) {
+            cityData = cityData
+            changeProvince(cityData);
+            // console.log(cityData); // [{"Hello": "world"}, …]
+            d3.json("country-code.json").then(function (countryData) {
+                // console.log(cityData, countryData); // [{"Hello": "world"}, …]
+                countryData = countryData
+            });
+        });
+    </script>
+    <!-- <script src="data/newdata.js"></script> -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- <script src="src/js/process.js"></script> -->
+
+    <title>新冠肺炎确诊个案行踪可视化</title>
+
+</head>
+
+<body>
+    <div id="map" class="map">
+    </div>
+    <div id="user-list__box">
+        <div id="user-list__head">
+            <div id="select_wrapper">
+                <select id="sel-province" onchange="changeProvince()">
+                    <option value="beijing">北京</option>
+                    <option value="heilongjiang">黑龙江</option>
+                    <option value="anhui">安徽</option>
+                    <option value="chongqing">重庆</option>
+                    <option value="fujian">福建</option>
+                    <option value="gansu">甘肃</option>
+                    <option value="guangdong">广东</option>
+                    <option value="guangxi">广西</option>
+                    <option value="guizhou">贵州</option>
+                    <option value="hainan">海南</option>
+                    <option value="hebei">河北</option>
+                    <option value="henan">河南</option>
+                    <option value="hunan">湖南</option>
+                    <option value="jiangsu">江苏</option>
+                    <option value="jiangxi">江西</option>
+                    <option value="jilin">吉林</option>
+                    <option value="liaoning">辽宁</option>
+                    <option value="neimenggu">内蒙古</option>
+                    <option value="ningxia">宁夏</option>
+                    <option value="shandong">山东</option>
+                    <option value="shanghai">上海</option>
+                    <option value="shanxi_jin">山西</option>
+                    <option value="shanxi_shan">陕西</option>
+                    <option value="sichuan">四川</option>
+                    <option value="taiwan">台湾</option>
+                    <option value="tianjin">天津</option>
+                    <option value="xianggang">香港</option>
+                    <option value="yunnan">云南</option>
+                    <option value="zhejiang">浙江</option>
+                </select>
+                <select id="sel-city" style="visibility: hidden;"></select>
+            </div>
+            <div id="user-list__title1">新冠肺炎</div>
+            <div id="user-list__title2">确诊个案行踪可视化</div>
+            <div id="order_wrapper">
+                <span id="img_order"></span>
+                <span class="order" id="btn_time" onclick="reorder(this)">时间排序 </span>
+                <!-- /
+            <span class="order" id="btn_distance" onclick="reorder(this)"> 距离排序</span> -->
+            </div>
+        </div>
+
+        <div id="data_description">数据更新时间 : 2020-06-12 21:37:00</div>
+
+        <div id="user-list__content"></div>
+    </div>
+    <div id="track-info__box">
+        <i id="update-hint">地图更新!</i>
+        <div class="track-info__help">
+            <div id="user-title-box">
+                <div class="track-info__title">
+                    <!-- <img src="./src/img/info@2x.png">&nbsp; -->
+                    <span id="user-info-date">轨迹编辑</span>
+                </div>
+                <p id="user-info-content">
+                    <!-- 点击选择文本标签，多选合并标签。
+                拖动标签至地图可以修改轨迹，
+                帮助我们生成更精确的轨迹。 -->
+                </p>
+            </div>
+
+            <button id="recall-merge__btn" onclick="backToMerge(currentCase._id)"></button>
+            <button id="select-place__btn" onclick="selectPlaceState()"></button>
+            <!-- <button id="modify-place__btn" onclick="modifyPlaceState()"></button> -->
+        </div>
+
+        <div id="track-info__home" class="track-info__home"></div>
+        <!-- <div id="track-info__city-or-province" class="track-info__city-or-province">
+        <span class="title_city-or-province">添加地点时补充省市</span><input id="input_city-or-province">
+    </div> -->
+    </div>
+    <img class="trans-btn" id="emergency" src="./src/img/trans_ambulance.png" alt="">
+    <img class="trans-btn" id="bus" src="./src/img/trans_bus.png" alt="">
+    <img class="trans-btn" id="train" src="./src/img/trans_train.png" alt="">
+    <img class="trans-btn" id="unknown" src="./src/img/trans_unknown.png" alt="">
+    <img class="trans-btn" id="car" src="./src/img/trans_car.png" alt="">
+    <img class="trans-btn" id="taxi" src="./src/img/trans_taxi.png" alt="">
+    <img class="trans-btn" id="walk" src="./src/img/trans_walk.png" alt="">
+
+    <img class="place-btn" id="home" src="./src/img/place_home.png" alt="">
+    <img class="place-btn" id="company" src="./src/img/place_company.png" alt="">
+    <img class="place-btn" id="hospital" src="./src/img/place_hospital.png" alt="">
+    <img class="place-btn" id="market" src="./src/img/place_market.png" alt="">
+    <img class="place-btn" id="restaurant" src="./src/img/place_restaurant.png" alt="">
+    <img class="place-btn" id="station" src="./src/img/place_station.png" alt="">
+    <img class="place-btn" id="relations" src="./src/img/place_relations.png" alt="">
+
+    <div id="copyright">Copyright © 北京邮电大学 / 数字媒体与设计艺术学院 / 可视化与人机交互研究组</div>
+    <div id="author">方案设计：李铁萌 &nbsp;&nbsp;自然语言处理：周维 / 伍颂倩<br />轨迹可视化：周维 /
+        李素雯&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;视觉设计：朱阳阳</div>
+
+    <script type="text/javascript" src="src/js/listPanel.js"></script>
+    <script>
+        // window.onload = function() {
+        var startPOI, endPOI;
+        var myGeo = new BMap.Geocoder();
+        var index = 0; //用户的序号
+        var zoom = 12;
+
+        // 用于绘制的全局变量
+        var data;
+        var currentCase;
+        var canBeClicked = false;
+        var municipalities = ['beijing', 'shanghai', 'tianjin', 'chongqing', 'xianggang', 'taiwan']
+
+        //注意将map的crs赋值 crs: L.CRS.Baidu
+        var map = L.map('map', {
+            crs: L.CRS.Baidu, // 坐标参考系统
+            minZoom: 1,
+            maxZoom: 18,
+            attributionControl: false,
+            center: [44.576383600536744, 129.61037862555978],
+            zoom: 11,
+            doubleClickZoom: false
+        });
+
+        var nearPointData = []
+        var nearPointList = ["便利店", "银行", "超市", "蔬菜店", "市场", "商场", "药店"]
+        function getNearLocation(searchName, point, resolve) {
+            let lat = point.lat
+            let lng = point.lng
+            $.ajax({
+                type: 'GET',
+                url: 'http://api.map.baidu.com/place/v2/search?query=' + searchName + '&location=' + lat + ',' + lng + '&radius=5000&output=json&ak=vrdkaDGnbGWW2Aq4UFlOOjfUe76x3G9T',
+                data: {
+                    output: 'json',
+                },
+                dataType: 'jsonp',
+                success: function (data) {
+                    // console.log(data.results[0].location, 'data.results[0].location')
+                    if (data.results[0]) {
+                        nearPointData = data.results[0].location
+                        return resolve(nearPointData)
+                    } else {
+                        return false
+                        // return resolve(false)
+                        // console.log('err！！！')
+                    }
+                    // console.log(data.results[0], 'data.results[0]')
+
+                },
+                error: function () {
+                    console.log('err')
+                }
+            });
+        }
+
+        //控制地图底图
+        L.tileLayer.baidu({ layer: 'custom', customid: 'grayscale' }).addTo(map)
+        //自定义样式地图，customid可选值：dark,midnight,grayscale,hardedge,light,redalert,googlelite,grassgreen,pink,darkgreen,bluish
+        const p1 = (palce1, cityData) =>
+            new Promise((resolve, reject) => {
+                let hasNearWord = false
+                // let place_name =  + place.name;
+                for (let item of nearPointList) {
+                    if (palce1.indexOf(item) !== -1) {
+                        hasNearWord = true
+                        let status = getNearLocation(palce1, currentCase.address_POI, resolve)
+                        if (!status) {
+                            hasNearWord = false
+                        }
+                        break;
+                    } else {
+                        hasNearWord = false
+                    }
+                }
+                if (!hasNearWord) {
+                    let realCity = ''
+                    if (currentCase.province === '北京市') {
+                        realCity = currentCase.province
+                    } else {
+                        realCity = currentCase.city
+                    }
+                    for (let index in cityData) {
+                        // 如果地点名称里边有其他市区名称，就改成其他市区再定位***************
+                        let cityName = cityData[index].name ? cityData[index].name : ' '
+                        let cityCut = cityName.replace('市', '')
+                        // 如果识别到的地点名后面有区，不要变成市
+                        if (palce1.indexOf(cityData[index].name) > -1) {
+                            realCity = cityData[index].name
+                            break;
+                        }
+                    }
+                
+                    // console.log(palce1, 'palce1')
+                    // console.log(realCity, 'realCity111')
+                    let palceName = realCity + palce1 // Angeli 2020.10.23 currentCase.province + currentCase.city + currentCase['District / County'] + palce1
+
+                    // console.log(palceName, palce1, 'palceName')
+                    myGeo.getPoint(palceName, function (point) {
+                        if (point) {
+                            resolve(point)
+                        } else {
+                            //resolve('')
+                        }
+                    }, realCity) // Angeli 2020.10.23
+
+                }
+
+            })
+
+        const p2 = (palce1) =>
+            new Promise((resolve, reject) => {
+                // console.log(palce1, 'palce1,p233')
+                myGeo.getPoint(palce1, function (point) {
+                    if (point) {
+                        console.log(currentCase.city,"currentCase.city")
+                        resolve(point)
+                    }
+                }, currentCase.city) // Angeli 2020.10.23
+            })
+
+        function uuid() {
+            var s = [];
+            var hexDigits = "0123456789abcdef";
+            for (var i = 0; i < 36; i++) {
+                s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+            }
+            s[14] = "4";  // bits 12-15 of the time_hi_and_version field to 0010
+            s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);  // bits 6-7 of the clock_seq_hi_and_reserved to 01
+            s[8] = s[13] = s[18] = s[23] = "-";
+
+            var uuid = s.join("");
+            return uuid;
+        }
+
+        // 获取路径起始经纬度
+        const func = async (cityData) => {
+            // console.log(currentCase._id, 'currentCase')
+            // 获取居住地经纬度
+            var address_str = currentCase.province + currentCase.city + currentCase.patient_information[0].current_address; //  currentCase.province + currentCase.city + currentCase.patient_information[0].current_address; // Angeli 2020.10.23
+            var address_POI;
+            await p2(address_str)
+                .then(res => {
+                    currentCase.address_POI = res;
+                    address_POI = L.latLng(res.lat, res.lng)
+                })
+            //     myGeo.getPoint(address_str, function (point) {
+            //         currentCase.address_POI = point;
+            //         address_POI = L.latLng(point.lat, point.lng)
+
+            //    })
+
+            // 获取路径起点 终点经纬度
+            var points = [], place_POI;
+
+            // console.log("func", currentCase);
+            var a = 0;
+            for (const item of currentCase.track) {
+                var b = 0;
+                //console.log("place",item.place)
+                for (place of item.place) {
+                    delete place.midPOI;
+                    // 如果查询到“家”，就改成现居住地的详细地点
+                    if (place.name === '家' || place.name === "家门" || place.name === "家门口" ||
+                        place.name === "家中") {
+                        place.name = currentCase['patient_information'][0]['current_address']
+                    }
+           
+                    // let place_name =  + place.name;
+                    await p1(place.name, cityData)
+                        .then(res => {
+                            if (res) {
+                                // console.log('res',res)
+                                if (a == currentCase.track.length && b == item.place.length) {
+                                    canBeClicked = true;
+                                }
+                                place.POI = res;
+                                place_POI = L.latLng(res.lat, res.lng);
+                                var distance = address_POI.distanceTo(place_POI);
+                                if (distance <= 100000) {
+                                    points.push(res);
+                                    place.isRemote = false;
+                                }
+                                else place.isRemote = true;
+                            }
+                            b++;
+
+                        })
+                }
+                a++;
+                //console.log("place.POI", item.place);
+
+            }
+
+
+            var minLng = Math.min.apply(Math, points.map(d => { return d.lng; }));
+            var maxLng = Math.max.apply(Math, points.map(d => { return d.lng; }));
+            var minLat = Math.min.apply(Math, points.map(d => { return d.lat; }));
+            var maxLat = Math.max.apply(Math, points.map(d => { return d.lat; }));
+            //console.log(minLng, maxLng, minLat, maxLat);
+
+            //var center = [(minLat + maxLat) / 2, (minLng + maxLng) / 2];
+            var center = [address_POI.lat, address_POI.lng];
+
+            //var pre_zoom = map.getZoom();
+            //console.log("in",pre_zoom);
+            zoom = getZoom(maxLng, minLng, maxLat, minLat);
+            //console.log("zoom",zoom);
+
+            // 定位地图中心和缩放 只能放在这
+            map.setView(center, zoom)
+            //map.setZoom(zoom);
+            //map.panTo([address_POI.lat, address_POI.lng]);
+
+            //console.log("POI", currentCase.track);
+            /*if (canBeClicked == true)*/ drawTrack(currentCase);
+        }
+
+        // 加载数据 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // console.log(cityData, 'cityData')
+
+        function changeProvince(cityData) {
+            var obj = {}
+            var province = document.getElementById('sel-province').value;
+            obj.value = province;
+            $.get("http://182.92.174.94:3000/", obj, function (docs) {
+                //d3.json("data.json").then(docs => {
+                const createMap = data => {
+                    createUserList(data, cityData);
+                    // 当方法有参数时, 需要在方法名前面加 function() {}
+                    document.getElementById('btn_time').onclick = () => {
+                        reorder(this, data);
+                    }
+                    currentCase = data[0];
+                    // console.log(data[index].city, 'data[index].city')
+                    func(cityData);
+                    wordSegmentation();
+                    createPanel();
+                }
+
+                var cities_wrapper = document.getElementById('sel-city');
+                if (municipalities.indexOf(province) < 0) {
+                    cities_wrapper.innerHTML = '';
+                    cities_wrapper.style.visibility = 'visible';
+
+                    var cities = [];
+                    docs = group_signal(docs, 'city');
+                    for (var city in docs) {
+                        if (city != '') {
+                            cities.push(city);
+                            var city_option = document.createElement('option');
+                            city_option.innerHTML = city;
+                            cities_wrapper.appendChild(city_option);
+                        }
+                    }
+                    data = docs[cities[0]]
+                    //console.log("initial",data);
+                    createMap(data);
+                    cities_wrapper.onchange = () => {
+                        var city = document.getElementById('sel-city').value;
+                        data = docs[city];
+                        //console.log(city,data);
+                        createMap(data);
+                    }
+                } else {
+                    cities_wrapper.style.visibility = 'hidden';
+                    data = docs;
+                    createMap(data);
+                }
+            })
+        }
+
+        // 数据分组函数
+        const group_signal = (data, key) => {
+            return data.reduce(function (prev, cur) {
+                (prev[cur[key]] = prev[cur[key]] || []).push(cur);
+                return prev;
+            }, {});
+        };
+        // 加载数据 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        // 添加画布
+        var height = document.body.clientHeight;
+        var width = document.body.clientWidth;
+
+        var svg = d3.select(map.getPanes().overlayPane)
+            .append('svg')
+            .attr("height", height)
+            .attr("width", width)
+            .attr("class", "fixed_svg")
+            .append("g");
+
+        var track_svg = svg.append("g"); // 轨迹
+        var icon_svg = svg.append("g"); // 图标
+        var text_svg = svg.append("g"); // 文字标签
+
+        var shadow = svg.append("defs")
+            .append("filter")
+            .attr("id", "drop-shadow")
+            .attr("x", 0)
+            .attr("y", 0)
+            //.attr("width", "200%")
+            .attr("height", "130%");
+
+        shadow.append("feOffset")
+            .attr("in", "SourceGraphic")
+            .attr("dx", 0)
+            .attr("dy", 3)
+            .attr("result", "offOut");
+
+        shadow.append("feColorMatrix")
+            .attr("result", "matrixOut")
+            .attr("in", "offOut")
+            .attr("type", "matrix")
+            .attr("values", "0.1 0 0 0 0\
+             0 0.1 0 0 0\
+             0 0 0.1 0 0\
+             0 0 0 0.1 0");
+
+        shadow.append("feGaussianBlur")
+            .attr("in", "matrixOut")
+            .attr("stdDeviation", 4)
+            .attr("result", "blurOut");
+
+        shadow.append("feBlend")
+            .attr("in", "SourceGraphic")
+            .attr("in2", "blurOut")
+            .attr("mode", "normal");
+
+        // 定义箭头标识
+        var arrowMarker = svg.append("defs")
+            .append("g")
+            .attr("id", "arrow");
+
+        var arrow_d = "M -8 -6 L 0 0 L -8 6";
+        arrowMarker.append("path")
+            .attr("d", arrow_d)
+            .attr("class", "arrow");
+        arrowMarker.append("path")
+            .attr("d", arrow_d)
+            .attr("transform", "translate(12,0)")
+            .attr("class", "arrow");
+        arrowMarker.append("path")
+            .attr("d", arrow_d)
+            .attr("transform", "translate(-12,0)")
+            .attr("class", "arrow");
+
+        // 定义填充icon
+        var smallWidth = 20, bigWidth = 42;
+        // 交通工具
+        var walk = svg.append("defs")
+            .append("pattern")
+            .attr("id", "walk")
+            .attr("x", 0).attr("y", 0)
+            .attr("height", smallWidth).attr("width", smallWidth)
+            .append("image")
+            .attr("x", 0).attr("y", 0)
+            .attr("height", smallWidth).attr("width", smallWidth)
+            .attr("xlink:href", "src/img/trans_walk.png");
+
+        var car = svg.append("defs")
+            .append("pattern")
+            .attr("id", "car")
+            .attr("x", 0).attr("y", 0)
+            .attr("height", smallWidth).attr("width", smallWidth)
+            .append("image")
+            .attr("x", 0).attr("y", 0)
+            .attr("height", smallWidth).attr("width", smallWidth)
+            .attr("xlink:href", "src/img/trans_car.png");
+
+        var taxi = svg.append("defs")
+            .append("pattern")
+            .attr("id", "taxi")
+            .attr("x", 0).attr("y", 0)
+            .attr("height", smallWidth).attr("width", smallWidth)
+            .append("image")
+            .attr("x", 0).attr("y", 0)
+            .attr("height", smallWidth).attr("width", smallWidth)
+            .attr("xlink:href", "src/img/trans_taxi.png");
+
+        var train = svg.append("defs")
+            .append("pattern")
+            .attr("id", "train")
+            .attr("x", 0).attr("y", 0)
+            .attr("height", smallWidth).attr("width", smallWidth)
+            .append("image")
+            .attr("x", 0).attr("y", 0)
+            .attr("height", smallWidth).attr("width", smallWidth)
+            .attr("xlink:href", "src/img/trans_train.png");
+
+        var bus = svg.append("defs")
+            .append("pattern")
+            .attr("id", "bus")
+            .attr("x", 0).attr("y", 0)
+            .attr("height", smallWidth).attr("width", smallWidth)
+            .append("image")
+            .attr("x", 0).attr("y", 0)
+            .attr("height", smallWidth).attr("width", smallWidth)
+            .attr("xlink:href", "src/img/trans_bus.png");
+
+        var emergency = svg.append("defs")
+            .append("pattern")
+            .attr("id", "emergency")
+            .attr("x", 0).attr("y", 0)
+            .attr("height", smallWidth).attr("width", smallWidth)
+            .append("image")
+            .attr("x", 0).attr("y", 0)
+            .attr("height", smallWidth).attr("width", smallWidth)
+            .attr("xlink:href", "src/img/trans_ambulance.png");
+
+        var trans_unknown = svg.append("defs")
+            .append("pattern")
+            .attr("id", "trans_unknown")
+            .attr("x", 0).attr("y", 0)
+            .attr("height", smallWidth).attr("width", smallWidth)
+            .append("image")
+            .attr("x", 0).attr("y", 0)
+            .attr("height", smallWidth).attr("width", smallWidth)
+            .attr("xlink:href", "src/img/trans_unknown.png");
+//}
+// 不要更改js引用顺序
+    </script>
+    <script src="./src/js/trackPanel.js"></script>
+    <script src="./src/js/trackPanelDrag.js"></script>
+    <script src="./src/js/trackPanelSelectPlace.js"></script>
+    <script src="./src/js/trackPanelModify.js"></script>
+    <script src="src/js/sketch.js"></script>
+    <script src="src/js/view.js"></script>
+    <script src="src/js/tool.js"></script>
+</body>
+
+</html>
