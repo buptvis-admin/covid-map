@@ -37,21 +37,98 @@ function healthStateColorFunc(hs) {
     }
 }
 
+//文案编辑
+function editWords(){
+    // document.getElementById("word-others").style.display = "none";
+    // document.getElementById("track-info__home").style.display = "none";
+    // document.getElementById("track-info-content__box").style.display = "none";
+
+    document.getElementById("user-list__content").style.display = "none";
+    document.getElementById("data_description").style.display = "none";
+    document.getElementById("word-write").style.display = "block";
+
+    document.getElementById("order_select").style.color =  "#AFB8C5";
+    document.getElementById("order_select").style.fontWeight = "500";
+
+    document.getElementById("order_input").style.color =  "#567ABF";
+    document.getElementById("order_input").style.fontWeight = "600";
+
+    document.getElementById("hover_bar").style.left = "120px";
+
+
+}
+
+function backToOriginal(){
+    // document.getElementById("word-others").style.display = "block";
+    //
+    // document.getElementById("track-info__home").style.display = "block";
+    // document.getElementById("track-info-content__box").style.display = "block";
+    document.getElementById("user-list__content").style.display = "block";
+    document.getElementById("data_description").style.display = "block";
+    document.getElementById("word-write").style.display = "none";
+
+    document.getElementById("order_select").style.color =  "#567ABF";
+    document.getElementById("order_select").style.fontWeight = "600";
+
+    document.getElementById("order_input").style.color =  "#AFB8C5";
+    document.getElementById("order_input").style.fontWeight = "500";
+
+    document.getElementById("hover_bar").style.left = "30px";
+
+}
+
+//数据传输
+function getTrack(){
+    let write_message = {};
+    write_message["province"]=document.getElementById("write-province").value;
+    write_message["city"]=document.getElementById("write-area").value;
+    write_message["place"]=document.getElementById("write-place").value;
+    write_message["pub_time"]=document.getElementById("public-time").value;
+    write_message["user_name"]=document.getElementById("patient-message").value;
+    write_message["track"]=document.getElementById("track").value;
+
+
+    $.ajax({
+        type: 'POST',
+        url: "/test",
+        data:JSON.stringify(write_message),
+        contentType: 'application/json; charset=UTF-8',
+        success:function(data_1){ //成功的话，得到消息
+            //alert(data);
+            console.log(data_1);
+            data = data_1;
+            currentCase = data_1;
+            console.log(cityData)
+            // var fullName = pinyin.getFullChars(currentCase.province);
+            // console.log(fullName)
+            func(cityData);
+            wordSegmentation();
+            createPanel();
+            document.getElementById("update-hint").style.opacity = 1;
+            // document.getElementById("word-write").style.display = "none";
+            // document.getElementById("word-others").style.display = "block";
+            // document.getElementById("track-info__home").style.display = "block";
+            // document.getElementById("track-info-content__box").style.display = "block";
+
+        }
+    })
+}
+
 // 预处理分词结构
 function wordSegmentation() {
     currentCase.track.forEach((item, index) => {
         // 提前处理 word_segmentation
-      
+
         if (typeof(item['word_segmentation']) === 'string' ) {
-            let trackTextList = item['word_segmentation'].split(' ') 
+            let trackTextList = item['word_segmentation'].split(' ')
             let trackTextListDataSet = []
-    
+
             trackTextList.forEach(textItem => {
             let labelObj =  {}
             labelObj.content = textItem.split('/')[0]
             labelObj.tag = textItem.split('/')[1]
             labelObj.placeIndex = textItem.split('/')[2]
-    
+
             if(trans_bus_and_sub.indexOf(textItem.split('/')[0]) !== -1) {
                 labelObj.tag = 'trans_bus'
             } else if(trans_walk.indexOf(textItem.split('/')[0]) !== -1) {
@@ -64,23 +141,26 @@ function wordSegmentation() {
                 labelObj.tag = 'trans_taxi'
             } else if(trans_ambulance.indexOf(textItem.split('/')[0]) !== -1) {
                 labelObj.tag = 'trans_emergency'
-            } 
+            }
             //  else {
             //     labelObj.trans = ''
             // }
             trackTextListDataSet.push(labelObj)
         })
-    
+
         item['word_segmentation'] = trackTextListDataSet
-        } 
-    
+        }
+
     })
-  
+
 }
 // wordSegmentation()
-function createPanel() {
 
-    let homeNodes = document.getElementById('track-info__home').childNodes 
+
+function createPanel() {
+    // console.log(cityData,currentCase)
+
+    let homeNodes = document.getElementById('track-info__home').childNodes
     for (let i = homeNodes.length-1;i >=0;i--) {
         homeNodes[i].remove();
     }
@@ -99,9 +179,9 @@ function createPanel() {
         // .on('click', selectPlace)
 
     document.getElementById('user-info-date').innerHTML = currentCase['release_date'].split(' ')[0]
-    document.getElementById('user-info-content').innerHTML =  currentCase['patient_information'][0]['name']  
+    document.getElementById('user-info-content').innerHTML =  currentCase['patient_information'][0]['name']
     + currentCase['patient_information'][0]['gender'] + ' '
-    + currentCase['patient_information'][0]['age'] + '<br>' 
+    + currentCase['patient_information'][0]['age'] + '<br>'
      // 添加 居住地
 
      if (document.getElementById('home-place__info') !== null) {
@@ -112,9 +192,9 @@ function createPanel() {
         homePlaceInfo.innerHTML = currentCase['patient_information'][0]['current_address']
         document.getElementById('track-info__home').appendChild(homePlaceInfo)
      }
-    
 
-    let reNodes = document.getElementById('track-info-content__box').childNodes 
+
+    let reNodes = document.getElementById('track-info-content__box').childNodes
     for (let i = reNodes.length-1;i >=0;i--) {
         reNodes[i].remove();
     }
@@ -123,14 +203,14 @@ function createPanel() {
     // placeHomeBtn.setAttribute('text', currentCase['patient_information'][0]['current_address'])
 
     currentCase.track.forEach((item, index) => {
-    
+
         let trackTextDivTmp = document.createElement('div')
         let trackTextDiv = document.createElement('div')
         trackTextDiv.setAttribute('id', 'track-text-div-'+ index.toString())
 
         let trackInfoList = document.createElement('div')
         trackInfoList.classList.add('track-info__list')
-        trackInfoList.setAttribute('index', index)    
+        trackInfoList.setAttribute('index', index)
 
         trackTextDivTmp.appendChild(trackTextDiv)
 
@@ -153,16 +233,16 @@ function createPanel() {
 
         // dom绑定数据，绘制元素
         d3.select('#track-text-div-' + index)
-        .selectAll("div")  
+        .selectAll("div")
         .data(item['word_segmentation']).enter()
         .append("div")
         .attr('class', 'text-label track-text__label-'+index)
         .attr('draggable', function(d) {
             if((d.tag === 'ns' || d.tag === 'nis' || d.tag === 'nt' || d.tag === 'ntu' ||
-                d.tag === 'nth' || d.tag === 'n' || d.tag === 'nr' || 
-                d.tag === 'f' || d.tag === 'ng' || d.tag === 'place' ||  d.tag === 'otherPlace') ) { 
+                d.tag === 'nth' || d.tag === 'n' || d.tag === 'nr' ||
+                d.tag === 'f' || d.tag === 'ng' || d.tag === 'place' ||  d.tag === 'otherPlace') ) {
                 return 'true'
-             } 
+             }
              else {
                  return 'false'
                 }
@@ -171,24 +251,24 @@ function createPanel() {
             let bgColor;
             // 判断地名
             if(obj.tag === 'ns' || obj.tag === 'nis' || obj.tag === 'nt' || obj.tag === 'ntu' ||
-            obj.tag === 'nth' || obj.tag === 'n' || obj.tag === 'nr' || 
+            obj.tag === 'nth' || obj.tag === 'n' || obj.tag === 'nr' ||
             obj.tag === 'f' || obj.tag === 'ng' || obj.tag === 'place' || obj.tag === 'otherPlace') { bgColor = themeBgColor }  //#ECF2F7
             // 判断交通工具
             if(obj.tag === 'trans_bus') {
                 bgColor = '#FFE5D9'
-    
+
             } else if(obj.tag === 'trans_walk') {
                 bgColor = '#D0EFF4'
-    
+
             } else if(obj.tag === 'trans_train') {
                 bgColor = '#D7EBFF'
-    
+
             } else if(obj.tag === 'trans_car') {
                 bgColor = '#E6EAFF'
-    
+
             } else if(obj.tag === 'trans_taxi') {
                 bgColor = '#FFF5D9'
-    
+
             } else if(obj.tag === 'trans_emergency') {
                 bgColor = '#FCD9D9'
             }
@@ -197,24 +277,24 @@ function createPanel() {
         .style('color', function(obj) {
             let fontColor;
             if(obj.tag === 'ns' || obj.tag === 'nis' || obj.tag === 'nt' || obj.tag === 'ntu' ||
-            obj.tag === 'nth' || obj.tag === 'n' || obj.tag === 'nr'  || 
-            obj.tag === 'f' || obj.tag === 'ng' || obj.tag === 'place' || obj.tag === 'otherPlace') { fontColor = themeFontColor } 
+            obj.tag === 'nth' || obj.tag === 'n' || obj.tag === 'nr'  ||
+            obj.tag === 'f' || obj.tag === 'ng' || obj.tag === 'place' || obj.tag === 'otherPlace') { fontColor = themeFontColor }
 
             if(obj.tag === 'trans_bus') {
                 fontColor = '#FF945F'
-    
+
             } else if(obj.tag === 'trans_walk') {
                 fontColor = '#4CBCD6'
-    
+
             } else if(obj.tag === 'trans_train') {
                 fontColor = '#579CFF'
-    
+
             } else if(obj.tag === 'trans_car') {
                 fontColor = '#858EFF'
-    
+
             } else if(obj.tag === 'trans_taxi') {
                 fontColor = '#FFD13E'
-    
+
             } else if(obj.tag === 'trans_emergency') {
                 fontColor = '#EF4437'
             }
@@ -222,27 +302,27 @@ function createPanel() {
         })
         .style('pointer-events', function(obj) {
             if(obj.tag === 'ns' || obj.tag === 'nis' || obj.tag === 'nt' || obj.tag === 'ntu' ||
-            obj.tag === 'nth' || obj.tag === 'n' || obj.tag === 'nr' || 
-            obj.tag === 'f' || obj.tag === 'ng' || obj.tag === 'place' || obj.tag === 'otherPlace') { return 'auto' } 
+            obj.tag === 'nth' || obj.tag === 'n' || obj.tag === 'nr' ||
+            obj.tag === 'f' || obj.tag === 'ng' || obj.tag === 'place' || obj.tag === 'otherPlace') { return 'auto' }
         })
         .style('cursor', function(obj) {
             if(obj.tag === 'ns' || obj.tag === 'nis' || obj.tag === 'nt' || obj.tag === 'ntu' ||
-            obj.tag === 'nth' || obj.tag === 'n' || obj.tag === 'nr' || 
-            obj.tag === 'f' || obj.tag === 'ng' || obj.tag === 'place' || obj.tag === 'otherPlace') { return 'pointer' } 
+            obj.tag === 'nth' || obj.tag === 'n' || obj.tag === 'nr' ||
+            obj.tag === 'f' || obj.tag === 'ng' || obj.tag === 'place' || obj.tag === 'otherPlace') { return 'pointer' }
         })
         .style('white-space', function(obj) {
             // 超过15个字换行
             if (obj.content.length > 15) {
                 return 'normal'
             }
-        })                   
+        })
         .text(function(d){
             return d.content
         })
         .style('font-weight', function(obj){
             if(obj.tag === 'ns' || obj.tag === 'nis' || obj.tag === 'nt' || obj.tag === 'ntu' ||
-            obj.tag === 'nth' || obj.tag === 'n' || obj.tag === 'nr'|| 
-            obj.tag === 'f' || obj.tag === 'ng' || obj.tag === 'place' || obj.tag === 'otherPlace') { return '800' } 
+            obj.tag === 'nth' || obj.tag === 'n' || obj.tag === 'nr'||
+            obj.tag === 'f' || obj.tag === 'ng' || obj.tag === 'place' || obj.tag === 'otherPlace') { return '800' }
         })
     })
 
@@ -258,11 +338,14 @@ function createPanel() {
         )
         .on('dblclick', modifyPlace)
     })
-    
+
 
     // .on('click', modifyPlace)
     // console.log(currentCase['track'][ 0 ]['word_segmentation'], 'word_segmentation')
 }
+
+
+
 
 // // 好像没什么用
 // function selectTrackLabel(e) {

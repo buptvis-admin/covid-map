@@ -95,8 +95,23 @@ function modifyPlace(data, index) {
                     .on('click', null)
                 })
 
+                // document.getElementById('modi-input').parentNode.innerHTML = document.getElementById('modi-input').value
+
+                // console.log(currentCase['track'][ parentIndex ]['word_segmentation'],  '@@@@')
+                // console.log(currentCase['track'][ parentIndex ]['place'][data.placeIndex], '###')
+                // document.getElementById('modi-input').parentNode.removeChild(document.getElementById('modi-input'))
             }
+            // alert("修改成功")
 
         }
     }
+    dataUpdate = true;
 }
+
+// createPanel()
+// d3.select('#track-info__box').on('click', function() {
+
+//     if (document.getElementById('modi-input')) {
+//         document.getElementById('modi-input').parentNode.innerHTML = document.getElementById('modi-input').value
+//     }
+// })

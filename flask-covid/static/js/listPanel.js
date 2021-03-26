@@ -45,16 +45,23 @@ function createUserList(data, cityData) {
         address_wrapper.innerHTML = address;
         case_wrapper.appendChild(address_wrapper);
 
-        // 默认第一个病例卡片展开
-        if (i == 0) {
-            case_wrapper.style.height = "42px";
-            block_span.style.opacity = 0;
-            address_wrapper.style.opacity = 1;
-        }
-
         case_wrapper.onclick = function() {
             // console.log(canBeClicked);
             //if (canBeClicked == true) {
+                //判断数据是否更新
+                if(dataUpdate == true){
+                    $.ajax({
+                        type: 'POST',
+                        url: "/update",
+                        data:JSON.stringify(currentCase),
+                        contentType: 'application/json; charset=UTF-8',
+                        success:function(data_2){ //成功的话，得到消息
+                            console.log(data_2);
+                        }
+                    })
+                }
+                dataUpdate = false;
+
                 canBeClicked = false;
                 var cases = this.parentNode.childNodes;
                 cases.forEach(case_item => {
@@ -74,11 +81,11 @@ function createUserList(data, cityData) {
 
                 index = i;
                 currentCase = data[i];
-                
                 func(cityData);
-                
+
                 wordSegmentation()
                 createPanel()
+                console.log(cityData,currentCase)
                 isSelectPlace = false
                 isModifyPlace = false
                 // document.getElementById('modify-place__btn').style.opacity = 1
