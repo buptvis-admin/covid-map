@@ -1,0 +1,135 @@
+{
+    "province": "辽宁省",
+    "city": "沈阳市",
+    "District / County": "铁西区",
+    "patient_information": [
+        {
+            "gender": "女",
+            "name": "孙某某",
+            "age": "39岁",
+            "current_address": "沈阳市铁西区卫工北街启工街道启明社区"
+        }
+    ],
+    "release_date": "2020年10月6日",
+    "track": [
+        {
+            "date": "2020年12月25日",
+            "health_status": "潜伏期",
+            "place": [],
+            "word_segmentation": "居家/v 未/d 外出/vi ；/w",
+            "sentence": "居家未外出；"
+        },
+        {
+            "date": "12月26日",
+            "health_status": "发病期",
+            "place": [
+                {
+                    "name": "",
+                    "tag": ""
+                },
+                {
+                    "name": "大东区",
+                    "tag": "",
+                    "vehicle": "car"
+                },
+                {
+                    "name": "坤瑶医肿瘤医院",
+                    "tag": "hospital",
+                    "vehicle": ""
+                },
+                {
+                    "name": "家中",
+                    "tag": "home",
+                    "vehicle": ""
+                }
+            ],
+            "word_segmentation": "9/m 时/qt 30/m 分/qt 乘/v 私家车/nz 至/p 大东区/place/1 德/b 坤瑶医肿瘤医院/place/2 就诊/vi ；/w 12/m 时/qt 30/m 分/qt 返回/v 家中/place/3 未/d 外出/vi ，/w",
+            "sentence": "9时30分乘私家车至大东区德坤瑶医肿瘤医院就诊；12时30分返回家中未外出，"
+        },
+        {
+            "date": "12月27日至12月28日",
+            "health_status": "发病期",
+            "place": [],
+            "word_segmentation": "居家/v 未/d 外出/vi ；/w",
+            "sentence": "居家未外出；"
+        },
+        {
+            "date": "12月29日",
+            "health_status": "发病期",
+            "place": [
+                {
+                    "name": "",
+                    "tag": ""
+                },
+                {
+                    "name": "大东区",
+                    "tag": "",
+                    "vehicle": "taxi"
+                },
+                {
+                    "name": "坤瑶医肿瘤医院",
+                    "tag": "hospital",
+                    "vehicle": ""
+                },
+                {
+                    "name": "家",
+                    "tag": "home",
+                    "vehicle": "taxi"
+                }
+            ],
+            "word_segmentation": "9/m 时/qt 19/m 分/qt 乘坐/v 网/n 约/d 车至/nr 大东区/place/1 德/b 坤瑶医肿瘤医院/place/2 就诊/vi ；/w 11/m 时/qt 49/m 分/qt 乘坐/v 网/n 约/d 车/n 回家/place/3 后/f 未/d 外出/vi ，/w",
+            "sentence": "9时19分乘坐网约车至大东区德坤瑶医肿瘤医院就诊；11时49分乘坐网约车回家后未外出，"
+        },
+        {
+            "date": "12月30日至2021年1月2日",
+            "health_status": "发病期",
+            "place": [],
+            "word_segmentation": "居家/v 未/d 外出/vi ；/w",
+            "sentence": "居家未外出；"
+        },
+        {
+            "date": "1月3日",
+            "health_status": "发病期",
+            "place": [
+                {
+                    "name": "",
+                    "tag": ""
+                },
+                {
+                    "name": "医护人员",
+                    "tag": "",
+                    "vehicle": ""
+                }
+            ],
+            "word_segmentation": "居家/v 未/d 外出/vi ，/w 下午/t 有/vyou 医护人员/place/1 入户/v 为/p 其/rz 进行/vn 全民/n 核酸/d 检测/vn 采样/vn （/w 检测/vn 结果/n 为/p 阴性/n ）/w ，/w",
+            "sentence": "居家未外出，下午有医护人员入户为其进行全民核酸检测采样（检测结果为阴性），"
+        },
+        {
+            "date": "1月4日",
+            "health_status": "发病期",
+            "place": [
+                {
+                    "name": "",
+                    "tag": ""
+                },
+                {
+                    "name": "中国医科大学盛京医院",
+                    "tag": "hospital",
+                    "vehicle": "taxi"
+                },
+                {
+                    "name": "家",
+                    "tag": "home",
+                    "vehicle": "car"
+                },
+                {
+                    "name": "沈阳市第六人民医院",
+                    "tag": "hospital",
+                    "vehicle": "emergency"
+                }
+            ],
+            "word_segmentation": "9/m 时/qt 40/m 分/qt 乘坐/v 网/n 约/d 车至/nr 中国医科大学盛京医院/place/1 滑翔/vi 院区/n 急诊内科/nit 就诊/vi 并/cc 进行/vn 核酸/d 检测/vn ；/w 19/m 时/qt 50/m 分/qt 乘/v 私家车/nz 返家/place/2 。/w 后/f 因/p 核酸/d 检测/vn 结果/n 阳性/d ，/w 由/p 120/m 急救车/n 转运/v 至/p 沈阳市第六人民医院/place/3 进一步/d 治疗/vn 。/w",
+            "sentence": "9时40分乘坐网约车至中国医科大学盛京医院滑翔院区急诊内科就诊并进行核酸检测；19时50分乘私家车返家。后因核酸检测结果阳性，由120急救车转运至沈阳市第六人民医院进一步治疗。"
+        }
+    ]
+}
