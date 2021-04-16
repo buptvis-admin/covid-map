@@ -105,6 +105,10 @@ function getTrack(){
             wordSegmentation();
             createPanel();
             document.getElementById("update-hint").style.opacity = 1;
+            setTimeout(function () {
+                document.getElementById("update-hint").style.opacity = 0;
+            },2000)
+            panel_transform_left();
             // document.getElementById("word-write").style.display = "none";
             // document.getElementById("word-others").style.display = "block";
             // document.getElementById("track-info__home").style.display = "block";
@@ -364,3 +368,37 @@ function createPanel() {
 //         //console.log(targetPlaceText)
 //     }
 // }
+
+
+//面板收缩
+function panel_transform_left(){
+    if(is_panel_click_left == false){
+        document.getElementById("user-list__box").setAttribute("style", "left:-290px;");
+        document.getElementById("panel-control-left").setAttribute("style", "left:0px;");
+        document.getElementById("panel-left").style.transform = "translate(-50%,-50%) rotate(180deg) ";
+        is_panel_click_left = true;
+    }
+    else {
+        document.getElementById("user-list__box").setAttribute("style", "left:0px;");
+        document.getElementById("panel-control-left").setAttribute("style", "left:290px;");
+        document.getElementById("panel-left").style.transform = "translate(-50%,-50%) rotate(0deg)";
+        is_panel_click_left = false;
+    }
+
+}
+
+function panel_transform_right(){
+    if(is_panel_click_right == false){
+        document.getElementById("track-info__box").setAttribute("style", "right:-260px;");
+        document.getElementById("panel-control-right").setAttribute("style", "right:0px;");
+        document.getElementById("panel-right").style.transform = "translate(-50%,-50%) rotate(0deg)";
+        is_panel_click_right = true;
+    }
+    else {
+        document.getElementById("track-info__box").setAttribute("style", "right:0px;");
+        document.getElementById("panel-control-right").setAttribute("style", "right:260px;");
+        document.getElementById("panel-right").style.transform = "translate(-50%,-50%) rotate(180deg)";
+        is_panel_click_right = false;
+    }
+
+}

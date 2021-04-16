@@ -236,14 +236,14 @@ def segmentation(sentence, entities):
     if (len(entities) > 0):
         next = ''
         for e, entity in enumerate(entities):
-            print(e,entity)
+            # print(e,entity)
             pre = sentence.split(entity, 1)[0]
             next = sentence.split(entity, 1)[1]
             vehicle = transport(pre + entity)
-            print(pre,next)
+            # print(pre,next)
 
             words_arr = ssegment.seg(pre)
-            print(words_arr)
+            # print(words_arr)
             words = ''
             for w in words_arr:
                 word = str(w)
@@ -287,7 +287,7 @@ def segmentation(sentence, entities):
                     text = text + words
             sentence = next
 
-        print(next)
+        # print(next)
         text = text.strip()  # 去掉字符串首尾空格
         next_arr = ssegment.seg(next)
         words_a = ''
@@ -295,9 +295,9 @@ def segmentation(sentence, entities):
             word = str(w)
             words_a = words_a + ' ' + word
         # print(places)
-        print(text)
-        print(words_a)
-        print('------')
+        # print(text)
+        # print(words_a)
+        # print('------')
         obj = {}
         obj['places'] = places
         obj['text'] = text + words_a
@@ -317,6 +317,7 @@ def segmentation(sentence, entities):
 
 
 def basic_message(message):
+    punctuation = ",|，|。|；|;|（| "
     m = []
     y = OrderedDict()
 
@@ -324,15 +325,17 @@ def basic_message(message):
     isgender = re.search(gender, message)
     if isgender is None:
         y["gender"] = ""
-    else:
-        y["gender"] = isgender.group()
-
-    punctuation = ",|，|。|；|;|（| "
-    ispunctuation = re.search(punctuation, message)
-    if ispunctuation is None:
         y["name"] = ""
     else:
-        y["name"] = message[0:ispunctuation.span()[0]]
+        y["gender"] = isgender.group()
+        print(isgender)
+        ispunctuation = re.search(punctuation, message)
+        if (ispunctuation is None) or (isgender.span()[0] == 0):
+            y["name"] = ""
+        else:
+            y["name"] = message[0:ispunctuation.span()[0]]
+
+
 
     isage = re.search('\d+岁',message)
     if isage is None:
@@ -340,26 +343,49 @@ def basic_message(message):
     else:
         y["age"] = isage.group()
 
-    current_address_delete1 = "长住|长期居住|现居住|现住址为|现居住地为|居住在|居住：|居住于|福建家庭住址：|系|现住址于|常住地|现住址："
-    current_address_delete2 = "家住|现居|居住|现住|现住址|住|居民|在"
+    current_address_delete1 = "长住|长期居住|现居住|现住址为|现居住地为|居住在|居住：|居住于|福建家庭住址：|现住址于|常住地|现住址："
+    current_address_delete2 = "家住|现居|居住|现住|现住址|住|居民|在|系"
+    current_address_delete3 = "人"
 
     isadress1 = re.search(current_address_delete1, message)
     isadress2 = re.search(current_address_delete2, message)
+    isadress3 = re.search(current_address_delete3, message)
+
+    print(isadress1,isadress2,isadress3)
 
     if isadress1 is None:
         if isadress2 is None:
-            y["current_address"] = ""
+
+            if isadress3 is None:
+                y["current_address"] = ""
+            else:
+                ispunctuation_1 = re.findall(punctuation, message[0:isadress3.span()[0]])
+                print(ispunctuation_1, "is")
+                if ispunctuation_1 is None:
+                    y["current_address"] = message[0:isadress3.span()[0]]
+                else:
+                    start_position = message[0:isadress3.span()[0]].rfind(ispunctuation_1[-1])
+                    y["current_address"] = message[start_position+1:isadress3.span()[0]]
+                    print(ispunctuation_1,"is")
         else:
-            y["current_address"] = message[isadress2.span()[1]:]
+            isadress2_re = re.search(punctuation,message[isadress2.span()[1]:])
+            if isadress2_re is None:
+                y["current_address"] = message[isadress2.span()[1]:]
+            else:
+                y["current_address"] = message[isadress2.span()[1]:isadress2.span()[1]+isadress2_re.span()[0]]
     else:
-        y["current_address"] = message[isadress1.span()[1]:]
+        isadress1_re = re.search(punctuation, message[isadress1.span()[1]:])
+        if isadress1_re is None:
+            y["current_address"] = message[isadress1.span()[1]:]
+        else:
+            y["current_address"] = message[isadress1.span()[1]:isadress1.span()[1] + isadress1_re.span()[0]]
     m.append(y)
     return m
 
 
 def everydayTrack(track):
     # isday = re.compile("\d+年\d+月\d+日\d+时\d+分|\d+年\d+月\d+日\d+时|\d+月\d+日\d+时\d+分|\d+月\d+日\d+时|\d+年\d+月\d+日|\d+月\d+日|\d+日")
-    isday = re.compile("\d*年?\d+月\d+日\d*时?\d*分?至\d*年?\d+月\d+日\d*时?\d*分?|\d*年?\d+月\d+日\d*时?\d*分?")
+    isday = re.compile("\d*年?\d+月\d+日\d*时?\d*分?至\d*年?\d+月?\d+日\d*时?\d*分?|\d*年?\d+月\d+日\d*时?\d*分?")
     time = isday.findall(track)
     way = []
     for k in range(len(time), 0, -1):

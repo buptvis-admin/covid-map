@@ -20,11 +20,11 @@ crossorigin=""></script>
 <script src="https://cdn.bootcss.com/proj4leaflet/1.0.1/proj4leaflet.min.js"></script>
 
 <script src="./static/js/tileLayer.baidu.js"></script>
-<script src="./static/js/Convert_Pinyin.js"></script>>
 <script src="https://cdn.jsdelivr.net/npm/d3@5.15.0/dist/d3.min.js"></script>
 <script>
     var cityData,countryData;
     var dataUpdate = false;
+    let is_panel_click_left = false, is_panel_click_right = false;
     d3.csv("static/BaiduMap_cityCode_1102-1.csv").then(function(cityData_1) {
         cityData = cityData_1
         changeProvince(cityData);
@@ -195,8 +195,17 @@ crossorigin=""></script>
 <img class="place-btn" id="station" src="./static/img/place_station.png" alt="">
 <img class="place-btn" id="relations" src="./static/img/place_relations.png" alt="">
 
-<div id="copyright">Copyright © 北京邮电大学 / 数字媒体与设计艺术学院 / 可视化与人机交互研究组</div>
-<div id="author">方案设计：李铁萌 &nbsp;&nbsp;自然语言处理：周维 / 伍颂倩<br/>轨迹可视化：周维 / 李素雯&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;视觉设计：朱阳阳</div>
+<div id="panel-control-left" onclick="panel_transform_left()">
+    <img id="panel-left" src="../static/img/arrow.png" alt="">
+</div>
+
+<div id="panel-control-right" onclick="panel_transform_right()">
+    <img id="panel-right" src="../static/img/arrow.png" alt="">
+</div>
+
+
+<div id="copyright">Copyright © 北京邮电大学 / 数字媒体与设计艺术学院 / 可视化与人机交互研究组<br/>方案设计：李铁萌 &nbsp;&nbsp;自然语言处理：周维 / 伍颂倩 &nbsp;&nbsp;轨迹可视化：周维 / 李素雯 &nbsp;&nbsp;视觉设计：朱阳阳</div>
+{#<div id="author">方案设计：李铁萌 &nbsp;&nbsp;自然语言处理：周维 / 伍颂倩<br/>轨迹可视化：周维 / 李素雯&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;视觉设计：朱阳阳</div>#}
 
 <script type="text/javascript" src="static/js/listPanel.js"></script>
 <script>
@@ -236,6 +245,7 @@ function getNearLocation(searchName, point, resolve) {
         },
         dataType: 'jsonp',
         success: function(data) {
+            console.log(data);
             // console.log(data.results[0].location, 'data.results[0].location')
             if(data.results[0]) {
                 nearPointData = data.results[0].location
@@ -292,8 +302,8 @@ const p1 = (palce1, cityData) =>
             }
             // console.log(palce1, 'palce1')
             {#console.log(realCity, 'realCity111')#}
-            palce1 = realCity + palce1 // Angeli 2020.10.23 currentCase.province + currentCase.city + currentCase['District / County'] + palce1
-                myGeo.getPoint(palce1, function (point) {
+            let placeName = realCity + palce1 // Angeli 2020.10.23 currentCase.province + currentCase.city + currentCase['District / County'] + palce1
+                myGeo.getPoint(placeName, function (point) {
                     if (point) {
                         resolve(point)
                     } else {
@@ -306,28 +316,16 @@ const p1 = (palce1, cityData) =>
 
     })
 
-const p3 = (palce1) =>
-    new Promise((resolve, reject) => {
-        // console.log(palce1, 'palce1,p333')
-        myGeo.getPoint(palce1, function (point) {
-            if (point) {
-                {#console.log(currentCase.city, "currentCase.city")#}
-                resolve(point)
-            }
-        }, currentCase.city) // Angeli 2020.10.23
-    })
-
-const p2 = (palce2) =>
+const p2 = (palce1) =>
     new Promise((resolve, reject) => {
         // let nearPoint = getNearLocation(palce2, homePoint)
-        myGeo.getPoint(palce2, function (point) {
+        myGeo.getPoint(palce1, function (point) {
             if (point) {
                 console.log(currentCase.city, "data[index]")
                 resolve(point)
             }
         }, currentCase.city) // Angeli 2020.10.23
     })
-    // console.log('???')
 
 function uuid() {
     var s = [];
@@ -349,8 +347,8 @@ const func = async (cityData) => {
     // console.log(currentCase._id, 'currentCase')
     // 获取居住地经纬度
     var address_str = currentCase.province + currentCase.city + currentCase.patient_information[0].current_address; //  currentCase.province + currentCase.city + currentCase.patient_information[0].current_address; // Angeli 2020.10.23
-    var address_POI = null;
-    await p3(address_str)
+    var address_POI;
+    await p2(address_str)
         .then(res => {
             currentCase.address_POI = res;
             address_POI = L.latLng(res.lat, res.lng)
@@ -431,6 +429,7 @@ const func = async (cityData) => {
 // console.log(cityData, 'cityData')
 
 function changeProvince(cityData) {
+    backToOriginal();
     //判断数据是否更新
     if(dataUpdate == true){
         $.ajax({
@@ -449,6 +448,7 @@ function changeProvince(cityData) {
     var province = document.getElementById('sel-province').value;
     obj.value = province;
     $.get("http://182.92.174.94:3000/", obj, function(docs) {
+        console.log("aaa");
     //d3.json("data.json").then(docs => {
         const createMap = data => {
             createUserList(data, cityData);

@@ -7,6 +7,24 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="FlaskConsoleOptions" custom-start-script="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))">
+    <envs>
+      <env key="FLASK_APP" value="app" />
+    </envs>
+    <option name="myCustomStartScript" value="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))" />
+    <option name="myEnvs">
+      <map>
+        <entry key="FLASK_APP" value="app" />
+      </map>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
@@ -18,9 +36,16 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
   </component>
   <component name="RunManager">
     <configuration name="flask-covid" type="Python.FlaskServer">
@@ -50,6 +75,15 @@
       <updated>1616725320222</updated>
       <workItem from="1616725321256" duration="26000" />
       <workItem from="1616725675244" duration="609000" />
+      <workItem from="1616726346488" duration="107000" />
+      <workItem from="1616752315870" duration="1305000" />
+      <workItem from="1616982275843" duration="11644000" />
+      <workItem from="1617070390026" duration="7053000" />
+      <workItem from="1617179741601" duration="1745000" />
+      <workItem from="1617697732101" duration="72000" />
+      <workItem from="1617717196393" duration="2322000" />
+      <workItem from="1617728501081" duration="11000" />
+      <workItem from="1618573424366" duration="7363000" />
     </task>
     <servers />
   </component>
@@ -57,28 +91,32 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="102" y="355" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1616726050052">
+    <state x="102" y="355" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1617088642682">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="102" y="355" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1616726050052" />
-    <state width="1236" height="397" key="GridCell.Tab.0.bottom" timestamp="1616726288083">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state x="102" y="355" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1617088642682" />
+    <state width="697" height="2" key="GridCell.Tab.0.bottom" timestamp="1618581324272">
+      <screen x="0" y="0" width="1234" height="783" />
     </state>
-    <state width="1236" height="397" key="GridCell.Tab.0.bottom/0.0.2560.1400@0.0.2560.1400" timestamp="1616726288083" />
-    <state width="1236" height="397" key="GridCell.Tab.0.center" timestamp="1616726288083">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state width="697" height="2" key="GridCell.Tab.0.bottom/0.0.1234.783@0.0.1234.783" timestamp="1618581324272" />
+    <state width="1305" height="164" key="GridCell.Tab.0.bottom/0.0.2560.1400@0.0.2560.1400" timestamp="1618578871312" />
+    <state width="697" height="2" key="GridCell.Tab.0.center" timestamp="1618581324271">
+      <screen x="0" y="0" width="1234" height="783" />
     </state>
-    <state width="1236" height="397" key="GridCell.Tab.0.center/0.0.2560.1400@0.0.2560.1400" timestamp="1616726288083" />
-    <state width="1236" height="397" key="GridCell.Tab.0.left" timestamp="1616726288083">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state width="697" height="2" key="GridCell.Tab.0.center/0.0.1234.783@0.0.1234.783" timestamp="1618581324271" />
+    <state width="1305" height="164" key="GridCell.Tab.0.center/0.0.2560.1400@0.0.2560.1400" timestamp="1618578871312" />
+    <state width="697" height="2" key="GridCell.Tab.0.left" timestamp="1618581324271">
+      <screen x="0" y="0" width="1234" height="783" />
     </state>
-    <state width="1236" height="397" key="GridCell.Tab.0.left/0.0.2560.1400@0.0.2560.1400" timestamp="1616726288083" />
-    <state width="1236" height="397" key="GridCell.Tab.0.right" timestamp="1616726288083">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state width="697" height="2" key="GridCell.Tab.0.left/0.0.1234.783@0.0.1234.783" timestamp="1618581324271" />
+    <state width="1305" height="164" key="GridCell.Tab.0.left/0.0.2560.1400@0.0.2560.1400" timestamp="1618578871312" />
+    <state width="697" height="2" key="GridCell.Tab.0.right" timestamp="1618581324271">
+      <screen x="0" y="0" width="1234" height="783" />
     </state>
-    <state width="1236" height="397" key="GridCell.Tab.0.right/0.0.2560.1400@0.0.2560.1400" timestamp="1616726288083" />
+    <state width="697" height="2" key="GridCell.Tab.0.right/0.0.1234.783@0.0.1234.783" timestamp="1618581324271" />
+    <state width="1305" height="164" key="GridCell.Tab.0.right/0.0.2560.1400@0.0.2560.1400" timestamp="1618578871312" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/flask_covid$flask_covid.coverage" NAME="flask-covid Coverage Results" MODIFIED="1616726054447" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/flask_covid$flask_covid.coverage" NAME="flask-covid Coverage Results" MODIFIED="1618578871291" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>

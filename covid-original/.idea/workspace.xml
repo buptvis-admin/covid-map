@@ -38,6 +38,12 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -48,6 +54,10 @@
       <option name="presentableId" value="Default" />
       <updated>1616724254233</updated>
       <workItem from="1616724255474" duration="370000" />
+      <workItem from="1617947090802" duration="638000" />
+      <workItem from="1618065194937" duration="1444000" />
+      <workItem from="1618145552809" duration="4552000" />
+      <workItem from="1618573460584" duration="5956000" />
     </task>
     <servers />
   </component>
@@ -64,5 +74,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

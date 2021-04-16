@@ -282,6 +282,7 @@ function drawPath(daily, datePoint, parentIndex, shape) {
 
                 var curve = path_wrapper
                     .append("path")
+                    .datum(points)
                     .attr("d", lineFunction(points))
                     .attr("stroke", () => {
                         switch (place.vehicle) {
@@ -434,6 +435,50 @@ function drawPath(daily, datePoint, parentIndex, shape) {
                         }
                     })
 
+                // 拖动地点图标
+                let nextPath;
+                end_circle
+                    .call(d3.drag()
+                    .on("start", function() {
+                        if (j <= daily.place.length - 2) {
+                            nextPath = curve.node().parentNode.nextSibling.firstChild;
+                        }
+                    })
+                    .on("drag", function(d) {
+                        d3.select(this).attr("x", d3.event.x - bigWidth/2).attr("y", d3.event.y - bigWidth/2);
+
+                        endPoint.x = d3.event.x;
+                        endPoint.y = d3.event.y;
+                        points = [points[0], midPoint, endPoint];
+                        // console.log("icon", points);
+
+                        curve.attr("d", lineFunction(points));
+                        addArrow(arrow1, curve, 0.25);
+                        addArrow(arrow2, curve, 0.75);
+
+                        if (nextPath) {
+                             let nextPathPoints = d3.select(nextPath).datum();
+                            nextPathPoints[0] = {
+                                x: d3.event.x,
+                                y: d3.event.y
+                            };
+
+                            d3.select(nextPath)
+                            .datum(nextPathPoints)
+                            .attr("d", lineFunction(nextPathPoints));
+                        }
+
+                        end_tag.select("text")
+                        .attr("x", endPoint.x)
+                        .attr("y", endPoint.y + 32);
+
+                        let tagWidth = end_tag.select("rect").attr("width");
+
+                        end_tag.select("rect")
+                        .attr("x", endPoint.x - tagWidth/2)
+                        .attr("y", endPoint.y + 22);
+                    })
+                );
 
                 // 未知地点标签
                 if (genericTerm.indexOf(place.name) !== -1 ||
@@ -488,21 +533,6 @@ function drawPath(daily, datePoint, parentIndex, shape) {
                         } else return 'block'
                     });
 
-                // 拖动地点图标
-                end_circle.call(d3.drag()
-                    .on("drag", function(d) {
-                        d3.select(this).attr("x", d3.event.x - bigWidth/2).attr("y", d3.event.y - bigWidth/2);
-
-                        endPoint.x = d3.event.x;
-                        endPoint.y = d3.event.y;
-                        points = [points[0], midPoint, endPoint];
-                        // console.log("icon", points);
-
-                        curve.attr("d", lineFunction(points));
-                        addArrow(arrow1, curve, 0.25);
-                        addArrow(arrow2, curve, 0.75);
-                    })
-                );
 
                 // 拖动地点标签
                 end_tag.call(d3.drag()

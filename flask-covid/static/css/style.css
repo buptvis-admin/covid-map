@@ -6,7 +6,8 @@ html, body {
     padding: 0;
     margin: 0;
     height: 100%;
-    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 body {
     vertical-align: baseline;
@@ -40,6 +41,7 @@ option{
     right: 0;
     bottom: 0;
     top: 0;
+    width: 100%;
 }
 #user-list__box {
     position: absolute;
@@ -51,6 +53,7 @@ option{
     z-index: 1001;
     border-radius: 14px;
     box-shadow: 0px 0px 10px 1px rgba(0,0,0, .2);
+    transition: left 500ms;
 }
 #user-list__head {
     padding: 20px 0 0 20px;
@@ -229,27 +232,27 @@ option{
     z-index: 998;
     background-color: #fff;
     color: #1F3051;
-    font-size: 10px;
-    line-height: 22px;
+    font-size: 8px;
+    line-height: 18px;
     text-align: center;
     border-radius: 12px;
     letter-spacing: 0.5px;
     padding: 2px 20px;
     margin: auto;
 }
-#author {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    z-index: 999;
-    color: #1F3051;
-    background-color: #fff;
-    /*font-family: pingfang SC;*/
-    font-size: 11px;
-    line-height: 18px;
-    border-radius: 8px 0 0 0;
-    padding: 7px 18px;
-}
+/*#author {*/
+/*    position: absolute;*/
+/*    right: 0;*/
+/*    bottom: 0;*/
+/*    z-index: 999;*/
+/*    color: #1F3051;*/
+/*    background-color: #fff;*/
+/*    !*font-family: pingfang SC;*!*/
+/*    font-size: 8px;*/
+/*    line-height: 18px;*/
+/*    border-radius: 8px 0 0 0;*/
+/*    padding: 7px 18px;*/
+/*}*/
 
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
     background: white;
@@ -268,4 +271,47 @@ option{
     -moz-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
+}
+
+
+#panel-control-left{
+    position: absolute;
+    width: 1.6%;
+    height: 8%;
+    left: 290px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 998;
+    background-color: #fff;
+    border-radius: 0px 10px 10px 0px;
+    align-content: center;
+    transition: left 500ms;
+}
+
+#panel-left{
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+#panel-control-right{
+    position: absolute;
+    width: 1.6%;
+    height: 8%;
+    right: 260px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 999;
+    background-color: #fff;
+    border-radius: 10px 0px 0px 10px;
+    align-content: center;
+    transition: right 500ms;
+}
+
+#panel-right{
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) rotate(180deg);
 }
